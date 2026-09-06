@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Github } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import LogoDark from "@/app/assets/Logo Dark Theme.png";
 
 const footerGroups = [
@@ -102,9 +102,10 @@ export default function LandingFooter() {
             target="_blank"
             rel="noreferrer"
             aria-label="Kantong on GitHub"
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.035] text-[#9aa8ba] transition hover:border-white/[0.16] hover:bg-white/[0.07] hover:text-white"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3 py-2 text-[#9aa8ba] transition hover:border-white/[0.16] hover:bg-white/[0.07] hover:text-white"
           >
-            <Github size={16} />
+            GitHub
+            <ArrowUpRight size={13} />
           </a>
         </div>
       </div>
