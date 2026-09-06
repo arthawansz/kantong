@@ -61,7 +61,7 @@ export default function LoginPage() {
                 width={40}
                 height={40}
                 priority
-                className="h-10 w-10 rounded-xl object-contain"
+                className="h-12 w-12 rounded-xl object-contain"
               />
               <div>
                 <p className="text-[17px] font-extrabold tracking-[-0.04em]">kantong.</p>
@@ -148,12 +148,6 @@ export default function LoginPage() {
               transition={{ duration: 0.5, delay: 0.12, ease: easeOut }}
               className="mb-5 self-start"
             >
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 text-[13px] font-medium text-[#737b88] transition hover:text-[#111827]"
-              >
-                <ArrowLeft size={15} /> Back to home
-              </Link>
             </motion.div>
 
             <motion.div
@@ -253,7 +247,7 @@ export default function LoginPage() {
                   />
                   <button
                     type="button"
-                    className="text-[11px] font-medium text-[#6b7280] transition hover:text-[#111827]"
+                    className="text-[6px] text-[#6b7280] transition hover:text-[#111827] cursor-pointer"
                   >
                     Forgot password?
                   </button>
@@ -313,7 +307,7 @@ export default function LoginPage() {
                 transition={{ duration: 0.45, delay: 0.66 }}
                 className="mt-6 text-center text-xs text-[#8b94a0]"
               >
-                New to Kantong? <span className="font-semibold text-[#111827]">Account creation is coming next.</span>
+                New to Kantong? <span className="font-semibold text-[#373738] hover:text-black cursor-pointer transition ease-in-out"> Create account now</span>
               </motion.p>
             </motion.div>
           </div>
