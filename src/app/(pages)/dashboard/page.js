@@ -29,8 +29,8 @@ import {
 
 function StatCard({ label, amount, trend, positive }) {
   return (
-    <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
-      <div className="flex items-center justify-between">
+    <div className="rounded-2xl border border-black/[0.06] bg-white p-5 md:p-6">
+      <div className="flex items-center justify-between gap-4">
         <p className="text-sm text-[#7a828e]">{label}</p>
         <Chip
           size="small"
@@ -44,7 +44,9 @@ function StatCard({ label, amount, trend, positive }) {
           }}
         />
       </div>
-      <p className="mt-3 text-2xl font-bold tracking-[-0.04em] text-[#111827]">{money(amount)}</p>
+      <p className="mt-3 text-2xl font-bold tracking-[-0.04em] text-[#111827] md:text-[28px]">
+        {money(amount)}
+      </p>
     </div>
   );
 }
@@ -64,7 +66,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      <section className="grid gap-5 xl:grid-cols-[1.45fr_1fr]">
+      <section>
         <div className="relative overflow-hidden rounded-[22px] bg-[#111827] p-6 text-white md:p-7">
           <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full border border-white/10" />
           <div className="pointer-events-none absolute -right-4 top-10 h-36 w-36 rounded-full border border-white/[0.07]" />
@@ -117,7 +119,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-1">
+        <div className="mt-5 grid gap-5 md:grid-cols-2">
           <StatCard label="Income this month" amount={4250000} trend="+12.4%" positive />
           <StatCard label="Expense this month" amount={1930000} trend="+5.8%" />
         </div>
