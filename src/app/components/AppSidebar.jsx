@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import LogoLight from "@/app/assets/Logo Light Theme.png";
 import {
   BarChart3,
   Home,
@@ -26,9 +28,14 @@ export default function AppSidebar() {
     <aside className="hidden min-h-screen w-[250px] shrink-0 border-r border-black/[0.06] bg-white px-4 py-6 lg:flex lg:flex-col">
       <div className="px-3">
         <div className="flex items-center gap-2.5">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-[#111827] text-sm font-black text-white">
-            K
-          </div>
+          <Image
+            src={LogoLight}
+            alt="Kantong"
+            width={36}
+            height={36}
+            priority
+            className="h-9 w-9 rounded-xl object-contain"
+          />
           <div>
             <p className="text-[17px] font-extrabold tracking-[-0.03em] text-[#111827]">kantong.</p>
             <p className="text-[11px] text-[#9ca3af]">personal finance</p>
