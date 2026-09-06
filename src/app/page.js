@@ -1,3 +1,4 @@
+import LandingFooter from "./components/LandingFooter";
 import LandingPageClient from "./LandingPageClient";
 
 export const metadata = {
@@ -7,5 +8,10 @@ export const metadata = {
 };
 
 export default function HomePage() {
-  return <LandingPageClient />;
+  return (
+    <div className="landing-page-shell">
+      <LandingPageClient />
+      <LandingFooter />
+    </div>
+  );
 }
