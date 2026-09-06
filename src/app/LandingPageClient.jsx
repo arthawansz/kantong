@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import { motion } from "framer-motion";
+import LogoLight from "@/app/assets/Logo Light Theme.png";
 import {
   ArrowRight,
   BarChart3,
@@ -81,9 +83,14 @@ export default function LandingPageClient() {
         >
           <div className="mx-auto flex max-w-[1320px] items-center justify-between px-5 py-5 md:px-8 lg:px-10">
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="grid h-9 w-9 place-items-center rounded-xl bg-[#111827] text-sm font-black text-white">
-                K
-              </div>
+              <Image
+                src={LogoLight}
+                alt="Kantong"
+                width={36}
+                height={36}
+                priority
+                className="h-9 w-9 rounded-xl object-contain"
+              />
               <div>
                 <p className="text-[17px] font-extrabold tracking-[-0.04em]">kantong.</p>
                 <p className="text-[10px] tracking-[0.08em] text-[#9ca3af]">PERSONAL FINANCE</p>
@@ -162,7 +169,13 @@ export default function LandingPageClient() {
                 <div className="grid md:grid-cols-[190px_1fr]">
                   <aside className="hidden border-r border-black/[0.06] bg-white p-4 md:block">
                     <div className="flex items-center gap-2 px-2 py-2">
-                      <div className="grid h-7 w-7 place-items-center rounded-lg bg-[#111827] text-[10px] font-black text-white">K</div>
+                      <Image
+                        src={LogoLight}
+                        alt="Kantong"
+                        width={28}
+                        height={28}
+                        className="h-7 w-7 rounded-lg object-contain"
+                      />
                       <span className="text-sm font-extrabold tracking-[-0.03em]">kantong.</span>
                     </div>
                     <div className="mt-6 space-y-2">
