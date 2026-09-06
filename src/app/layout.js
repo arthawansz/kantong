@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v1X-appRouter";
 import "./globals.css";
 import Providers from "./providers";
 
@@ -24,7 +25,9 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-[#f6f7f9]">
-        <Providers>{children}</Providers>
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+          <Providers>{children}</Providers>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
