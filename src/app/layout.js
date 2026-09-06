@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Providers from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,16 +14,18 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "KANTONG — Personal Finance",
-  description: "A clean personal finance tracker for wallets, transactions, categories, and cash flow.",
+  description: "A clean personal finance tracker for wallets, transactions, categories, and analytics.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html
-      lang="id"
+      lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full bg-[#f6f7f9]">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
