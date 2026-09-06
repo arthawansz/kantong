@@ -17,6 +17,17 @@ import {
 
 export default function TransactionDialog({ open, onClose }) {
   const [tab, setTab] = useState(1);
+  const [wallet, setWallet] = useState("BCA");
+  const [category, setCategory] = useState("Food");
+  const [destinationWallet, setDestinationWallet] = useState("GoPay");
+
+  const handleTabChange = (_, value) => {
+    setTab(value);
+
+    if (value === 2 && wallet === destinationWallet) {
+      setDestinationWallet(wallet === "GoPay" ? "Cash" : "GoPay");
+    }
+  };
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -27,7 +38,7 @@ export default function TransactionDialog({ open, onClose }) {
       <DialogContent sx={{ px: 3, pb: 3 }}>
         <Tabs
           value={tab}
-          onChange={(_, value) => setTab(value)}
+          onChange={handleTabChange}
           sx={{
             mb: 3,
             minHeight: 42,
@@ -49,7 +60,18 @@ export default function TransactionDialog({ open, onClose }) {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormControl fullWidth>
               <InputLabel>Wallet</InputLabel>
-              <Select label="Wallet" defaultValue="BCA">
+              <Select
+                label="Wallet"
+                value={wallet}
+                onChange={(event) => {
+                  const nextWallet = event.target.value;
+                  setWallet(nextWallet);
+
+                  if (tab === 2 && nextWallet === destinationWallet) {
+                    setDestinationWallet(nextWallet === "GoPay" ? "Cash" : "GoPay");
+                  }
+                }}
+              >
                 <MenuItem value="BCA">BCA</MenuItem>
                 <MenuItem value="Cash">Cash</MenuItem>
                 <MenuItem value="GoPay">GoPay</MenuItem>
@@ -59,15 +81,28 @@ export default function TransactionDialog({ open, onClose }) {
             {tab === 2 ? (
               <FormControl fullWidth>
                 <InputLabel>To wallet</InputLabel>
-                <Select label="To wallet" defaultValue="GoPay">
-                  <MenuItem value="Cash">Cash</MenuItem>
-                  <MenuItem value="GoPay">GoPay</MenuItem>
+                <Select
+                  label="To wallet"
+                  value={destinationWallet}
+                  onChange={(event) => setDestinationWallet(event.target.value)}
+                >
+                  {['BCA', 'Cash', 'GoPay']
+                    .filter((item) => item !== wallet)
+                    .map((item) => (
+                      <MenuItem key={item} value={item}>
+                        {item}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             ) : (
               <FormControl fullWidth>
                 <InputLabel>Category</InputLabel>
-                <Select label="Category" defaultValue="Food">
+                <Select
+                  label="Category"
+                  value={category}
+                  onChange={(event) => setCategory(event.target.value)}
+                >
                   <MenuItem value="Food">Food & Drink</MenuItem>
                   <MenuItem value="Transport">Transport</MenuItem>
                   <MenuItem value="Lifestyle">Lifestyle</MenuItem>
@@ -84,7 +119,7 @@ export default function TransactionDialog({ open, onClose }) {
               label="Date"
               type="date"
               defaultValue="2026-09-06"
-              InputLabelProps={{ shrink: true }}
+              slotProps={{ inputLabel: { shrink: true } }}
             />
             {tab === 2 && <TextField fullWidth label="Transfer fee" placeholder="Rp0" />}
           </div>
