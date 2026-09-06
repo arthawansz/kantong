@@ -141,18 +141,18 @@ export default function LoginPage() {
         <section className="relative flex h-full items-center justify-center overflow-hidden bg-[#f7f8fa] px-5 sm:px-8 lg:px-12">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(126,224,183,0.14),transparent_25%)]" />
 
-          <div className="relative z-10 flex h-full w-full max-w-[470px] items-center">
+          <div className="relative z-10 flex w-full max-w-[470px] flex-col justify-center">
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.12, ease: easeOut }}
-              className="absolute left-0 top-7 sm:top-8"
+              className="mb-5 self-start"
             >
               <Link
                 href="/"
-                className="inline-flex items-center gap-2 text-sm font-medium text-[#737b88] transition hover:text-[#111827]"
+                className="inline-flex items-center gap-2 text-[13px] font-medium text-[#737b88] transition hover:text-[#111827]"
               >
-                <ArrowLeft size={16} /> Back to home
+                <ArrowLeft size={15} /> Back to home
               </Link>
             </motion.div>
 
@@ -251,7 +251,10 @@ export default function LoginPage() {
                     label="Remember me"
                     sx={{ m: 0, "& .MuiFormControlLabel-label": { fontSize: 13, color: "#6b7280" } }}
                   />
-                  <button type="button" className="text-xs font-semibold text-[#4b5563] transition hover:text-[#111827]">
+                  <button
+                    type="button"
+                    className="text-[11px] font-medium text-[#6b7280] transition hover:text-[#111827]"
+                  >
                     Forgot password?
                   </button>
                 </div>
