@@ -123,9 +123,9 @@ export default function LandingPageClient() {
               <div className="overflow-hidden rounded-[22px] border border-black/[0.05] bg-[#f4f6f8]">
                 <div className="flex h-12 items-center justify-between border-b border-black/[0.06] bg-white px-4 md:px-6">
                   <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#d7dbe0]" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#d7dbe0]" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#d7dbe0]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#ff4141]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#ffe32c]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#52ff46]" />
                   </div>
                   <div className="rounded-full bg-[#f4f5f7] px-3 py-1 text-[10px] font-medium text-[#8b94a0]">app.kantong / overview</div>
                 </div>
