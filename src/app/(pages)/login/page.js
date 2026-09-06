@@ -14,8 +14,8 @@ import {
   TextField,
 } from "@mui/material";
 import {
-  ArrowLeft,
   ArrowRight,
+  ChevronLeft,
   Eye,
   EyeOff,
   Fingerprint,
@@ -141,15 +141,22 @@ export default function LoginPage() {
         <section className="relative flex h-full items-center justify-center overflow-hidden bg-[#f7f8fa] px-5 sm:px-8 lg:px-12">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(126,224,183,0.14),transparent_25%)]" />
 
-          <div className="relative z-10 flex w-full max-w-[470px] flex-col justify-center">
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.12, ease: easeOut }}
-              className="mb-5 self-start"
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.48, delay: 0.12, ease: easeOut }}
+            className="absolute right-5 top-5 z-20 sm:right-8 sm:top-8 lg:right-10"
+          >
+            <Link
+              href="/"
+              aria-label="Back to landing page"
+              className="grid h-10 w-10 place-items-center rounded-xl border border-black/[0.07] bg-white/90 text-[#667085] shadow-sm backdrop-blur transition hover:border-black/[0.12] hover:bg-white hover:text-[#111827]"
             >
-            </motion.div>
+              <ChevronLeft size={19} strokeWidth={2} />
+            </Link>
+          </motion.div>
 
+          <div className="relative z-10 flex w-full max-w-[470px] flex-col justify-center">
             <motion.div
               initial={{ opacity: 0, y: 24, scale: 0.985 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -245,12 +252,12 @@ export default function LoginPage() {
                     label="Remember me"
                     sx={{ m: 0, "& .MuiFormControlLabel-label": { fontSize: 13, color: "#6b7280" } }}
                   />
-                  <button
-                    type="button"
-                    className="text-[6px] text-[#6b7280] transition hover:text-[#111827] cursor-pointer"
+                  <Link
+                    href="/forgot-password"
+                    className="text-[11px] font-medium text-[#6b7280] transition hover:text-[#111827]"
                   >
                     Forgot password?
-                  </button>
+                  </Link>
                 </div>
 
                 <Button
@@ -307,7 +314,10 @@ export default function LoginPage() {
                 transition={{ duration: 0.45, delay: 0.66 }}
                 className="mt-6 text-center text-xs text-[#8b94a0]"
               >
-                New to Kantong? <span className="font-semibold text-[#373738] hover:text-black cursor-pointer transition ease-in-out"> Create account now</span>
+                New to Kantong?{" "}
+                <Link href="/register" className="font-semibold text-[#373738] transition hover:text-black">
+                  Create account now
+                </Link>
               </motion.p>
             </motion.div>
           </div>
