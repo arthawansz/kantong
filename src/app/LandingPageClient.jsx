@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Button from "@mui/material/Button";
+import { motion } from "framer-motion";
 import {
   ArrowRight,
   BarChart3,
@@ -44,48 +46,75 @@ const features = [
   },
 ];
 
+const reveal = {
+  initial: { opacity: 0, y: 22 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: false, amount: 0.2 },
+  transition: { duration: 0.58, ease: "easeOut" },
+};
+
 export default function LandingPageClient() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 18);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <main className="min-h-screen overflow-hidden bg-[#f6f7f9] text-[#111827]">
-      <section className="relative border-b border-black/[0.06]">
+      <section className="relative border-b border-black/[0.06] pt-[80px]">
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(17,24,39,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(17,24,39,0.035)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:linear-gradient(to_bottom,black,transparent_88%)]" />
         <div className="pointer-events-none absolute left-1/2 top-[-280px] h-[560px] w-[900px] -translate-x-1/2 rounded-full bg-[#bff7df]/45 blur-[140px]" />
 
-        <nav className="relative z-20 mx-auto flex max-w-[1320px] items-center justify-between px-5 py-5 md:px-8 lg:px-10">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="grid h-9 w-9 place-items-center rounded-xl bg-[#111827] text-sm font-black text-white">
-              K
-            </div>
-            <div>
-              <p className="text-[17px] font-extrabold tracking-[-0.04em]">kantong.</p>
-              <p className="text-[10px] tracking-[0.08em] text-[#9ca3af]">PERSONAL FINANCE</p>
-            </div>
-          </Link>
+        <motion.nav
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+            scrolled
+              ? "border-b border-black/[0.06] bg-[#f6f7f9]/88 shadow-[0_10px_30px_rgba(17,24,39,0.05)] backdrop-blur-xl"
+              : "bg-transparent"
+          }`}
+        >
+          <div className="mx-auto flex max-w-[1320px] items-center justify-between px-5 py-5 md:px-8 lg:px-10">
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="grid h-9 w-9 place-items-center rounded-xl bg-[#111827] text-sm font-black text-white">
+                K
+              </div>
+              <div>
+                <p className="text-[17px] font-extrabold tracking-[-0.04em]">kantong.</p>
+                <p className="text-[10px] tracking-[0.08em] text-[#9ca3af]">PERSONAL FINANCE</p>
+              </div>
+            </Link>
 
-          <div className="hidden items-center gap-7 text-sm font-medium text-[#6b7280] md:flex">
-            <a href="#product" className="transition hover:text-[#111827]">Product</a>
-            <a href="#insights" className="transition hover:text-[#111827]">Insights</a>
-            <a href="#principles" className="transition hover:text-[#111827]">Principles</a>
-          </div>
+            <div className="hidden items-center gap-7 text-sm font-medium text-[#6b7280] md:flex">
+              <a href="#product" className="transition hover:text-[#111827]">Product</a>
+              <a href="#insights" className="transition hover:text-[#111827]">Insights</a>
+              <a href="#principles" className="transition hover:text-[#111827]">Principles</a>
+            </div>
 
-          <div className="flex items-center gap-2">
-            <Button component={Link} href="/login" variant="text" sx={{ color: "#4b5563", px: 1.5 }}>
-              Sign in
-            </Button>
-            <Button
-              component={Link}
-              href="/login"
-              variant="contained"
-              endIcon={<ArrowRight size={16} />}
-              sx={{ bgcolor: "#111827", px: 2.1, "&:hover": { bgcolor: "#1f2937" } }}
-            >
-              Open Kantong
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button component={Link} href="/login" variant="text" sx={{ color: "#4b5563", px: 1.5 }}>
+                Sign in
+              </Button>
+              <Button
+                component={Link}
+                href="/login"
+                variant="contained"
+                endIcon={<ArrowRight size={16} />}
+                sx={{ bgcolor: "#111827", px: 2.1, "&:hover": { bgcolor: "#1f2937" } }}
+              >
+                Open Kantong
+              </Button>
+            </div>
           </div>
-        </nav>
+        </motion.nav>
 
         <div className="relative z-10 mx-auto max-w-[1320px] px-5 pb-24 pt-20 md:px-8 md:pt-28 lg:px-10 lg:pb-32 lg:pt-32">
-          <div className="mx-auto max-w-5xl text-center">
+          <motion.div {...reveal} className="mx-auto max-w-5xl text-center">
             <div className="mx-auto mb-6 flex w-fit items-center gap-2 rounded-full border border-black/[0.07] bg-white/80 px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.08em] text-[#657080] shadow-sm backdrop-blur">
               <span className="h-1.5 w-1.5 rounded-full bg-[#16a34a] shadow-[0_0_0_4px_rgba(22,163,74,0.09)]" />
               MONEY, WITHOUT THE NOISE
@@ -115,9 +144,9 @@ export default function LandingPageClient() {
                 See the product
               </Button>
             </div>
-          </div>
+          </motion.div>
 
-          <div id="product" className="relative mx-auto mt-20 max-w-[1180px]">
+          <motion.div {...reveal} id="product" className="relative mx-auto mt-20 max-w-[1180px]">
             <div className="absolute inset-x-24 bottom-[-60px] h-40 rounded-full bg-[#9ee8c8]/25 blur-[80px]" />
             <div className="relative overflow-hidden rounded-[28px] border border-black/[0.08] bg-white p-2 shadow-[0_30px_90px_rgba(17,24,39,0.12)]">
               <div className="overflow-hidden rounded-[22px] border border-black/[0.05] bg-[#f4f6f8]">
@@ -222,11 +251,11 @@ export default function LandingPageClient() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      <section id="insights" className="mx-auto max-w-[1320px] px-5 py-24 md:px-8 lg:px-10 lg:py-32">
+      <motion.section {...reveal} id="insights" className="mx-auto max-w-[1320px] px-5 py-24 md:px-8 lg:px-10 lg:py-32">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.6fr] lg:gap-16">
           <div>
             <p className="text-[11px] font-bold tracking-[0.16em] text-[#8b94a0]">THE SYSTEM</p>
@@ -247,10 +276,10 @@ export default function LandingPageClient() {
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       <section id="principles" className="border-y border-white/[0.08] bg-[#0d1422] text-white">
-        <div className="mx-auto grid max-w-[1320px] gap-12 px-5 py-24 md:px-8 lg:grid-cols-[1.25fr_1fr] lg:px-10 lg:py-32">
+        <motion.div {...reveal} className="mx-auto grid max-w-[1320px] gap-12 px-5 py-24 md:px-8 lg:grid-cols-[1.25fr_1fr] lg:px-10 lg:py-32">
           <div>
             <div className="flex items-center gap-2 text-[11px] font-bold tracking-[0.16em] text-[#8fa0b8]">
               <Sparkles size={14} className="text-[#7fe0b7]" /> PRODUCT PRINCIPLES
@@ -273,10 +302,10 @@ export default function LandingPageClient() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
-      <section className="mx-auto max-w-[1320px] px-5 py-24 md:px-8 lg:px-10 lg:py-28">
+      <motion.section {...reveal} className="mx-auto max-w-[1320px] px-5 py-24 md:px-8 lg:px-10 lg:py-28">
         <div className="relative overflow-hidden rounded-[30px] bg-white p-8 shadow-[0_24px_70px_rgba(17,24,39,0.07)] ring-1 ring-black/[0.05] md:p-12 lg:p-16">
           <div className="pointer-events-none absolute right-[-100px] top-[-120px] h-80 w-80 rounded-full border border-black/[0.05]" />
           <div className="pointer-events-none absolute right-[-10px] top-[-30px] h-44 w-44 rounded-full border border-black/[0.05]" />
@@ -297,9 +326,9 @@ export default function LandingPageClient() {
             </Button>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      <footer className="border-t border-black/[0.06] bg-white">
+      <motion.footer {...reveal} className="border-t border-black/[0.06] bg-white">
         <div className="mx-auto flex max-w-[1320px] flex-col gap-4 px-5 py-7 text-xs text-[#8b94a0] md:flex-row md:items-center md:justify-between md:px-8 lg:px-10">
           <div className="flex items-center gap-2 font-semibold text-[#111827]">
             <Landmark size={15} /> kantong.
@@ -307,7 +336,7 @@ export default function LandingPageClient() {
           <p>Personal finance, designed for clarity.</p>
           <p>© 2026 Kantong</p>
         </div>
-      </footer>
+      </motion.footer>
     </main>
   );
 }
