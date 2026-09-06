@@ -1,21 +1,89 @@
 // use prisma-next
 
+enum TransactionType {
+  @@type("pg/text@1")
+
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   username  String?
   name      String?
-  posts     Post[]
+  password  String?
+
+  wallets      Wallet[]
+  categories   Category[]
+  transactions Transaction[]
+
   createdAt TimestamptzString @default(now())
   updatedAt temporal.updatedAtString()
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+model Wallet {
+  id      Int    @id @default(autoincrement())
+  name    String
+  icon    String?
+  color   String?
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  transactions Transaction[] @relation("TransactionSource")
+  transfersIn  Transaction[] @relation("TransactionDestination")
+
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+}
+
+model Category {
+  id    Int             @id @default(autoincrement())
+  name  String
+  icon  String?
+  color String?
+  type  TransactionType
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  transactions Transaction[]
+
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+}
+
+model Transaction {
+  id     Int             @id @default(autoincrement())
+  type   TransactionType
+  amount Decimal
+  fee    Decimal @default(0)
+  note   String?
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  walletId Int
+  wallet   Wallet @relation(
+    "TransactionSource",
+    fields: [walletId],
+    references: [id]
+  )
+
+  destinationWalletId Int?
+  destinationWallet   Wallet? @relation(
+    "TransactionDestination",
+    fields: [destinationWalletId],
+    references: [id]
+  )
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  transactionDate TimestamptzString @default(now())
+
   createdAt TimestamptzString @default(now())
   updatedAt temporal.updatedAtString()
 }
