@@ -144,7 +144,15 @@ export default function TransactionDialog({ open, onClose }) {
               defaultValue="2026-09-06"
               slotProps={{ inputLabel: { shrink: true } }}
             />
-            {tab === 2 && <TextField fullWidth label="Transfer fee" placeholder="Rp0" />}
+            {tab === 2 && (
+              <TextField
+                fullWidth
+                label="Transfer fee"
+                placeholder="Rp0"
+                slotProps={{ inputLabel: { shrink: true } }}
+                sx={textFieldSx}
+              />
+            )}
           </div>
 
           <Button
