@@ -12,6 +12,7 @@ import {
   Settings,
   Tags,
   WalletCards,
+  X,
 } from "lucide-react";
 
 const navItems = [
@@ -22,7 +23,7 @@ const navItems = [
   { label: "Analytics", href: "/analytics", icon: BarChart3 },
 ];
 
-export default function AppSidebar({ collapsed }) {
+export default function AppSidebar({ collapsed, mobileOpen, onCloseMobile }) {
   const pathname = usePathname();
 
   const navLink = ({ label, href, icon: Icon }) => {
@@ -31,9 +32,10 @@ export default function AppSidebar({ collapsed }) {
     const content = (
       <Link
         href={href}
+        onClick={onCloseMobile}
         aria-label={collapsed ? label : undefined}
         className={`group flex w-full items-center rounded-xl py-2.5 text-sm font-medium transition-all duration-200 ${
-          collapsed ? "justify-center px-2" : "gap-3 px-3"
+          collapsed ? "lg:justify-center lg:px-2" : "gap-3 px-3"
         } ${
           active
             ? "bg-[#f1f3f5] text-[#111827]"
@@ -41,12 +43,12 @@ export default function AppSidebar({ collapsed }) {
         }`}
       >
         <Icon size={18} strokeWidth={1.9} className="shrink-0" />
-        {!collapsed && <span className="whitespace-nowrap">{label}</span>}
+        <span className={`${collapsed ? "lg:hidden" : ""} whitespace-nowrap`}>{label}</span>
       </Link>
     );
 
     return collapsed ? (
-      <Tooltip key={href} title={label} placement="right" arrow>
+      <Tooltip key={href} title={label} placement="right" arrow disableHoverListener={mobileOpen}>
         {content}
       </Tooltip>
     ) : (
@@ -55,40 +57,57 @@ export default function AppSidebar({ collapsed }) {
   };
 
   return (
-    <aside
-      className={`fixed inset-y-0 left-0 z-40 hidden h-[100dvh] shrink-0 border-r border-black/[0.06] bg-white transition-[width] duration-300 ease-in-out lg:flex lg:flex-col ${
-        collapsed ? "w-[84px] px-3 py-5" : "w-[250px] px-4 py-5"
-      }`}
-    >
-      <div className={`flex h-11 items-center ${collapsed ? "justify-center" : "px-2"}`}>
-        <Link
-          href="/dashboard"
-          className={`flex min-w-0 items-center ${collapsed ? "justify-center" : "gap-2.5"}`}
-        >
-          <Image
-            src={LogoLight}
-            alt="Kantong"
-            width={40}
-            height={40}
-            priority
-            className={`${collapsed ? "h-10 w-10" : "h-9 w-9"} shrink-0 rounded-xl object-contain transition-all duration-300`}
-          />
+    <>
+      <button
+        type="button"
+        aria-label="Close sidebar overlay"
+        onClick={onCloseMobile}
+        className={`fixed inset-0 z-40 bg-black/25 backdrop-blur-[2px] transition-opacity duration-300 lg:hidden ${
+          mobileOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
 
-          {!collapsed && (
-            <div className="whitespace-nowrap">
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 flex h-[100dvh] w-[250px] shrink-0 flex-col border-r border-black/[0.06] bg-white px-4 py-5 transition-all duration-300 ease-in-out lg:z-40 ${
+          mobileOpen ? "translate-x-0" : "-translate-x-full"
+        } ${collapsed ? "lg:w-[84px] lg:translate-x-0 lg:px-3" : "lg:w-[250px] lg:translate-x-0 lg:px-4"}`}
+      >
+        <div className={`flex h-11 items-center justify-between ${collapsed ? "lg:justify-center" : "lg:px-2"}`}>
+          <Link
+            href="/dashboard"
+            onClick={onCloseMobile}
+            className={`flex min-w-0 items-center gap-2.5 ${collapsed ? "lg:justify-center" : ""}`}
+          >
+            <Image
+              src={LogoLight}
+              alt="Kantong"
+              width={40}
+              height={40}
+              priority
+              className={`${collapsed ? "lg:h-10 lg:w-10" : ""} h-9 w-9 shrink-0 rounded-xl object-contain transition-all duration-300`}
+            />
+
+            <div className={`${collapsed ? "lg:hidden" : ""} whitespace-nowrap`}>
               <p className="text-[17px] font-extrabold tracking-[-0.03em] text-[#111827]">kantong.</p>
               <p className="text-[11px] text-[#9ca3af]">personal finance</p>
             </div>
-          )}
-        </Link>
-      </div>
+          </Link>
 
-      <nav className={`${collapsed ? "mt-7" : "mt-8"} space-y-1.5`}>
-        {navItems.map(navLink)}
-      </nav>
+          <button
+            type="button"
+            onClick={onCloseMobile}
+            aria-label="Close sidebar"
+            className="grid h-8 w-8 place-items-center rounded-lg text-[#7a828e] transition hover:bg-[#f6f7f9] hover:text-[#111827] lg:hidden"
+          >
+            <X size={18} />
+          </button>
+        </div>
 
-      {!collapsed && (
-        <div className="mt-auto rounded-2xl border border-black/[0.06] bg-[#fafafa] p-4">
+        <nav className={`${collapsed ? "lg:mt-7" : "lg:mt-8"} mt-8 space-y-1.5`}>
+          {navItems.map(navLink)}
+        </nav>
+
+        <div className={`${collapsed ? "lg:hidden" : ""} mt-auto rounded-2xl border border-black/[0.06] bg-[#fafafa] p-4`}>
           <p className="text-xs font-semibold text-[#111827]">Monthly target</p>
           <p className="mt-1 text-xs leading-5 text-[#8a919d]">Keep spending below Rp3.5M this month.</p>
           <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-[#e5e7eb]">
@@ -99,36 +118,39 @@ export default function AppSidebar({ collapsed }) {
             <span>Rp3.5M</span>
           </div>
         </div>
-      )}
 
-      <div className={collapsed ? "mt-auto" : "mt-3"}>
-        {collapsed ? (
-          <Tooltip title="Settings" placement="right" arrow>
+        <div className={collapsed ? "lg:mt-auto" : "mt-3"}>
+          {collapsed ? (
+            <Tooltip title="Settings" placement="right" arrow disableHoverListener={mobileOpen}>
+              <Link
+                href="/settings"
+                onClick={onCloseMobile}
+                aria-label="Settings"
+                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition lg:justify-center lg:px-2 ${
+                  pathname === "/settings"
+                    ? "bg-[#f1f3f5] text-[#111827]"
+                    : "text-[#737b88] hover:bg-[#f8f9fa] hover:text-[#111827]"
+                }`}
+              >
+                <Settings size={18} />
+                <span className="lg:hidden">Settings</span>
+              </Link>
+            </Tooltip>
+          ) : (
             <Link
               href="/settings"
-              aria-label="Settings"
-              className={`flex items-center justify-center rounded-xl px-2 py-2.5 text-sm transition ${
+              onClick={onCloseMobile}
+              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
                 pathname === "/settings"
                   ? "bg-[#f1f3f5] text-[#111827]"
                   : "text-[#737b88] hover:bg-[#f8f9fa] hover:text-[#111827]"
               }`}
             >
-              <Settings size={18} />
+              <Settings size={18} /> Settings
             </Link>
-          </Tooltip>
-        ) : (
-          <Link
-            href="/settings"
-            className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
-              pathname === "/settings"
-                ? "bg-[#f1f3f5] text-[#111827]"
-                : "text-[#737b88] hover:bg-[#f8f9fa] hover:text-[#111827]"
-            }`}
-          >
-            <Settings size={18} /> Settings
-          </Link>
-        )}
-      </div>
-    </aside>
+          )}
+        </div>
+      </aside>
+    </>
   );
 }
