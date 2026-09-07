@@ -3,11 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Tooltip } from "@mui/material";
 import LogoLight from "@/app/assets/Logo Light Theme.png";
 import {
   BarChart3,
-  ChevronLeft,
-  ChevronRight,
   Home,
   ReceiptText,
   Settings,
@@ -23,79 +22,69 @@ const navItems = [
   { label: "Analytics", href: "/analytics", icon: BarChart3 },
 ];
 
-export default function AppSidebar({ collapsed, onToggle }) {
+export default function AppSidebar({ collapsed }) {
   const pathname = usePathname();
+
+  const navLink = ({ label, href, icon: Icon }) => {
+    const active = pathname === href;
+
+    const content = (
+      <Link
+        href={href}
+        aria-label={collapsed ? label : undefined}
+        className={`group flex w-full items-center rounded-xl py-2.5 text-sm font-medium transition-all duration-200 ${
+          collapsed ? "justify-center px-2" : "gap-3 px-3"
+        } ${
+          active
+            ? "bg-[#f1f3f5] text-[#111827]"
+            : "text-[#737b88] hover:bg-[#f8f9fa] hover:text-[#111827]"
+        }`}
+      >
+        <Icon size={18} strokeWidth={1.9} className="shrink-0" />
+        {!collapsed && <span className="whitespace-nowrap">{label}</span>}
+      </Link>
+    );
+
+    return collapsed ? (
+      <Tooltip key={href} title={label} placement="right" arrow>
+        {content}
+      </Tooltip>
+    ) : (
+      <div key={href}>{content}</div>
+    );
+  };
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-40 hidden h-[100dvh] shrink-0 border-r border-black/[0.06] bg-white transition-[width] duration-300 lg:flex lg:flex-col ${
-        collapsed ? "w-[84px] px-2 py-5" : "w-[250px] px-4 py-5"
+      className={`fixed inset-y-0 left-0 z-40 hidden h-[100dvh] shrink-0 border-r border-black/[0.06] bg-white transition-[width] duration-300 ease-in-out lg:flex lg:flex-col ${
+        collapsed ? "w-[84px] px-3 py-5" : "w-[250px] px-4 py-5"
       }`}
     >
-      <div
-        className={`flex items-center ${
-          collapsed ? "justify-between gap-1 px-0.5" : "justify-between px-2"
-        }`}
-      >
-        <Link href="/dashboard" className="flex min-w-0 items-center gap-2.5">
+      <div className={`flex h-11 items-center ${collapsed ? "justify-center" : "px-2"}`}>
+        <Link
+          href="/dashboard"
+          className={`flex min-w-0 items-center ${collapsed ? "justify-center" : "gap-2.5"}`}
+        >
           <Image
             src={LogoLight}
             alt="Kantong"
-            width={36}
-            height={36}
+            width={40}
+            height={40}
             priority
-            className="h-9 w-9 shrink-0 rounded-xl object-contain"
+            className={`${collapsed ? "h-10 w-10" : "h-9 w-9"} shrink-0 rounded-xl object-contain transition-all duration-300`}
           />
-          <div
-            className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${
-              collapsed ? "w-0 opacity-0" : "w-[132px] opacity-100"
-            }`}
-          >
-            <p className="text-[17px] font-extrabold tracking-[-0.03em] text-[#111827]">kantong.</p>
-            <p className="text-[11px] text-[#9ca3af]">personal finance</p>
-          </div>
-        </Link>
 
-        <button
-          type="button"
-          onClick={onToggle}
-          aria-label={collapsed ? "Open sidebar" : "Close sidebar"}
-          className={`grid shrink-0 place-items-center rounded-lg border border-black/[0.07] bg-white text-[#6b7280] shadow-sm transition hover:bg-[#f7f8fa] hover:text-[#111827] ${
-            collapsed ? "h-7 w-7" : "h-8 w-8"
-          }`}
-        >
-          {collapsed ? <ChevronRight size={15} /> : <ChevronLeft size={16} />}
-        </button>
+          {!collapsed && (
+            <div className="whitespace-nowrap">
+              <p className="text-[17px] font-extrabold tracking-[-0.03em] text-[#111827]">kantong.</p>
+              <p className="text-[11px] text-[#9ca3af]">personal finance</p>
+            </div>
+          )}
+        </Link>
       </div>
 
-      <nav className={`${collapsed ? "mt-8" : "mt-9"} space-y-1.5`}>
-        {navItems.map(({ label, href, icon: Icon }) => {
-          const active = pathname === href;
-
-          return (
-            <Link
-              key={href}
-              href={href}
-              title={collapsed ? label : undefined}
-              className={`flex w-full items-center rounded-xl py-2.5 text-sm font-medium transition ${
-                collapsed ? "justify-center px-2" : "gap-3 px-3"
-              } ${
-                active
-                  ? "bg-[#f1f3f5] text-[#111827]"
-                  : "text-[#737b88] hover:bg-[#f8f9fa] hover:text-[#111827]"
-              }`}
-            >
-              <Icon size={18} strokeWidth={1.9} className="shrink-0" />
-              <span
-                className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${
-                  collapsed ? "w-0 opacity-0" : "w-auto opacity-100"
-                }`}
-              >
-                {label}
-              </span>
-            </Link>
-          );
-        })}
+      <nav className={`${collapsed ? "mt-7" : "mt-8"} space-y-1.5`}>
+        {navItems.map(navLink)}
       </nav>
 
       {!collapsed && (
@@ -112,26 +101,34 @@ export default function AppSidebar({ collapsed, onToggle }) {
         </div>
       )}
 
-      <Link
-        href="/settings"
-        title={collapsed ? "Settings" : undefined}
-        className={`flex items-center rounded-xl py-2.5 text-sm transition ${
-          collapsed ? "mt-auto justify-center px-2" : "mt-3 gap-3 px-3"
-        } ${
-          pathname === "/settings"
-            ? "bg-[#f1f3f5] text-[#111827]"
-            : "text-[#737b88] hover:bg-[#f8f9fa] hover:text-[#111827]"
-        }`}
-      >
-        <Settings size={18} className="shrink-0" />
-        <span
-          className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${
-            collapsed ? "w-0 opacity-0" : "w-auto opacity-100"
-          }`}
-        >
-          Settings
-        </span>
-      </Link>
+      <div className={collapsed ? "mt-auto" : "mt-3"}>
+        {collapsed ? (
+          <Tooltip title="Settings" placement="right" arrow>
+            <Link
+              href="/settings"
+              aria-label="Settings"
+              className={`flex items-center justify-center rounded-xl px-2 py-2.5 text-sm transition ${
+                pathname === "/settings"
+                  ? "bg-[#f1f3f5] text-[#111827]"
+                  : "text-[#737b88] hover:bg-[#f8f9fa] hover:text-[#111827]"
+              }`}
+            >
+              <Settings size={18} />
+            </Link>
+          </Tooltip>
+        ) : (
+          <Link
+            href="/settings"
+            className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
+              pathname === "/settings"
+                ? "bg-[#f1f3f5] text-[#111827]"
+                : "text-[#737b88] hover:bg-[#f8f9fa] hover:text-[#111827]"
+            }`}
+          >
+            <Settings size={18} /> Settings
+          </Link>
+        )}
+      </div>
     </aside>
   );
 }
