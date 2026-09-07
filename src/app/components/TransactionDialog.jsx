@@ -29,6 +29,17 @@ export default function TransactionDialog({ open, onClose }) {
     }
   };
 
+  const textFieldSx = {
+    "& .MuiOutlinedInput-root": {
+      minHeight: 56,
+      borderRadius: "12px",
+    },
+    "& .MuiInputLabel-root": {
+      backgroundColor: "#ffffff",
+      px: 0.5,
+    },
+  };
+
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle sx={{ px: 3, pt: 3, pb: 1.5, fontWeight: 800, letterSpacing: "-0.03em" }}>
@@ -55,7 +66,13 @@ export default function TransactionDialog({ open, onClose }) {
         </Tabs>
 
         <div className="grid gap-4">
-          <TextField fullWidth label="Amount" placeholder="Rp0" />
+          <TextField
+            fullWidth
+            label="Amount"
+            placeholder="Rp0"
+            slotProps={{ inputLabel: { shrink: true } }}
+            sx={textFieldSx}
+          />
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormControl fullWidth>
@@ -86,7 +103,7 @@ export default function TransactionDialog({ open, onClose }) {
                   value={destinationWallet}
                   onChange={(event) => setDestinationWallet(event.target.value)}
                 >
-                  {['BCA', 'Cash', 'GoPay']
+                  {["BCA", "Cash", "GoPay"]
                     .filter((item) => item !== wallet)
                     .map((item) => (
                       <MenuItem key={item} value={item}>
@@ -111,7 +128,13 @@ export default function TransactionDialog({ open, onClose }) {
             )}
           </div>
 
-          <TextField fullWidth label="Note" placeholder="Optional note" />
+          <TextField
+            fullWidth
+            label="Note"
+            placeholder="Optional note"
+            slotProps={{ inputLabel: { shrink: true } }}
+            sx={textFieldSx}
+          />
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <TextField
