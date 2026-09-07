@@ -80,13 +80,23 @@ export default function DashboardPage() {
                 </p>
               </div>
 
+              <button
+                type="button"
+                onClick={() => setDialogOpen(true)}
+                aria-label="Add transaction"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border-2 border-white bg-[#111827] text-white transition hover:bg-[#19243a] sm:hidden"
+              >
+                <Plus size={18} />
+              </button>
+
               <Button
                 onClick={() => setDialogOpen(true)}
                 variant="contained"
                 startIcon={<Plus size={17} />}
+                className="!hidden sm:!inline-flex"
                 sx={{
                   bgcolor: "#111827",
-                  color: "#ffff",
+                  color: "#ffffff",
                   border: 2,
                   borderColor: "#fefefe",
                   px: 2,
