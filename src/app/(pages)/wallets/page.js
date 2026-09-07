@@ -23,27 +23,6 @@ import {
 } from "lucide-react";
 import { money, wallets as initialWallets } from "../../data/mockDashboard";
 
-const walletMeta = {
-  BCA: {
-    type: "Bank account",
-    icon: Building2,
-    accent: "#111827",
-    tint: "#f3f4f6",
-  },
-  Cash: {
-    type: "Cash",
-    icon: Banknote,
-    accent: "#2563eb",
-    tint: "#eff6ff",
-  },
-  GoPay: {
-    type: "E-wallet",
-    icon: Smartphone,
-    accent: "#16a34a",
-    tint: "#f0fdf4",
-  },
-};
-
 const walletTypeMeta = {
   "Bank account": {
     type: "Bank account",
@@ -65,6 +44,18 @@ const walletTypeMeta = {
     type: "Custom wallet",
     icon: WalletCards,
   },
+};
+
+const defaultWalletTypes = {
+  BCA: "Bank account",
+  Cash: "Cash",
+  GoPay: "E-wallet",
+};
+
+const walletVisuals = {
+  BCA: { accent: "#111827", tint: "#f3f4f6" },
+  Cash: { accent: "#2563eb", tint: "#eff6ff" },
+  GoPay: { accent: "#16a34a", tint: "#f0fdf4" },
 };
 
 const quickStats = [
@@ -197,13 +188,13 @@ export default function WalletsPage() {
 
         <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {wallets.map((wallet, index) => {
-            const typeMeta = walletTypeMeta[wallet.customType] ?? walletTypeMeta["Custom wallet"];
-            const meta = walletMeta[wallet.name] ?? {
-              ...typeMeta,
+            const resolvedType = wallet.customType ?? defaultWalletTypes[wallet.name] ?? "Custom wallet";
+            const typeMeta = walletTypeMeta[resolvedType] ?? walletTypeMeta["Custom wallet"];
+            const visuals = walletVisuals[wallet.name] ?? {
               accent: wallet.color,
               tint: "#f8fafc",
             };
-            const Icon = meta.icon;
+            const Icon = typeMeta.icon;
 
             return (
               <motion.div
@@ -215,20 +206,20 @@ export default function WalletsPage() {
               >
                 <div
                   className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full opacity-70"
-                  style={{ backgroundColor: meta.tint }}
+                  style={{ backgroundColor: visuals.tint }}
                 />
 
                 <div className="relative flex items-start justify-between gap-4">
                   <div className="flex min-w-0 items-center gap-3">
                     <div
                       className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl"
-                      style={{ backgroundColor: meta.tint, color: meta.accent }}
+                      style={{ backgroundColor: visuals.tint, color: visuals.accent }}
                     >
                       <Icon size={19} strokeWidth={1.9} />
                     </div>
                     <div className="min-w-0">
                       <p className="truncate text-sm font-bold text-[#111827]">{wallet.name}</p>
-                      <p className="mt-1 text-[11px] text-[#9ca3af]">{meta.type}</p>
+                      <p className="mt-1 text-[11px] text-[#9ca3af]">{typeMeta.type}</p>
                     </div>
                   </div>
 
