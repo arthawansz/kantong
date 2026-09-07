@@ -44,7 +44,11 @@ function StatCard({ label, amount, trend, positive }) {
           }}
         />
       </div>
-      <p className="mt-3 text-2xl font-bold tracking-[-0.04em] text-[#111827] md:text-[28px]">
+      <p
+        className={`mt-3 text-2xl font-bold tracking-[-0.04em] md:text-[28px] ${
+          positive ? "text-[#15803d]" : "text-[#dc2626]"
+        }`}
+      >
         {money(amount)}
       </p>
     </div>
@@ -84,7 +88,7 @@ export default function DashboardPage() {
                 type="button"
                 onClick={() => setDialogOpen(true)}
                 aria-label="Add transaction"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border-2 border-[#bbbbcc] bg-[#111827] text-white transition hover:bg-[#19243a] sm:hidden"
+                className="grid h-10 w-10 shrink-0 cursor-pointer place-items-center rounded-xl border-2 border-[#bbbbcc] bg-[#111827] text-white transition hover:bg-[#19243a] sm:hidden"
               >
                 <Plus size={18} />
               </button>
@@ -100,6 +104,7 @@ export default function DashboardPage() {
                   border: 2,
                   borderColor: "#fefefe",
                   px: 2,
+                  cursor: "pointer",
                   "&:hover": { bgcolor: "#19243a" },
                 }}
               >
@@ -144,7 +149,7 @@ export default function DashboardPage() {
               <p className="text-sm font-semibold">Cash flow</p>
               <p className="mt-1 text-xs text-[#9ca3af]">Income and expenses over the last 7 days</p>
             </div>
-            <Button size="small" endIcon={<ChevronDown size={14} />} sx={{ color: "#6b7280" }}>
+            <Button size="small" endIcon={<ChevronDown size={14} />} sx={{ color: "#6b7280", cursor: "pointer" }}>
               Last 7 days
             </Button>
           </div>
@@ -158,8 +163,8 @@ export default function DashboardPage() {
                     <stop offset="100%" stopColor="#111827" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="expenseFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#94a3b8" stopOpacity={0.16} />
-                    <stop offset="100%" stopColor="#94a3b8" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#dc2626" stopOpacity={0.15} />
+                    <stop offset="100%" stopColor="#dc2626" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid vertical={false} stroke="#eef0f2" />
@@ -179,7 +184,7 @@ export default function DashboardPage() {
                   }}
                 />
                 <Area type="monotone" dataKey="income" stroke="#111827" strokeWidth={2.2} fill="url(#incomeFill)" />
-                <Area type="monotone" dataKey="expense" stroke="#94a3b8" strokeWidth={2} fill="url(#expenseFill)" />
+                <Area type="monotone" dataKey="expense" stroke="#dc2626" strokeWidth={2} fill="url(#expenseFill)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -191,7 +196,7 @@ export default function DashboardPage() {
               <p className="text-sm font-semibold">Spending by category</p>
               <p className="mt-1 text-xs text-[#9ca3af]">September 2026</p>
             </div>
-            <button className="text-xs font-semibold text-[#6b7280] hover:text-[#111827]">View all</button>
+            <button className="cursor-pointer text-xs font-semibold text-[#6b7280] hover:text-[#111827]">View all</button>
           </div>
 
           <div className="mt-7 space-y-5">
@@ -203,7 +208,7 @@ export default function DashboardPage() {
                     <span className="text-sm font-medium">{item.label}</span>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-semibold">{money(item.value)}</p>
+                    <p className="text-sm font-semibold text-[#dc2626]">{money(item.value)}</p>
                     <p className="text-[10px] text-[#9ca3af]">{item.percent}%</p>
                   </div>
                 </div>
@@ -225,7 +230,7 @@ export default function DashboardPage() {
             <p className="text-sm font-semibold">Recent transactions</p>
             <p className="mt-1 text-xs text-[#9ca3af]">Your latest activity across all wallets</p>
           </div>
-          <Button size="small" sx={{ color: "#6b7280" }}>View all</Button>
+          <Button size="small" sx={{ color: "#6b7280", cursor: "pointer" }}>View all</Button>
         </div>
 
         <div className="mt-4 divide-y divide-black/[0.055]">
@@ -247,7 +252,7 @@ export default function DashboardPage() {
                       </p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <p className={`text-sm font-bold ${transaction.amount > 0 ? "text-[#15803d]" : "text-[#111827]"}`}>
+                      <p className={`text-sm font-bold ${transaction.amount > 0 ? "text-[#15803d]" : "text-[#dc2626]"}`}>
                         {transaction.amount > 0 ? "+" : "−"}{money(Math.abs(transaction.amount))}
                       </p>
                       <p className="mt-1 text-[10px] text-[#9ca3af]">{transaction.date}</p>
