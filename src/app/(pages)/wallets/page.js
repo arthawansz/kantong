@@ -15,6 +15,7 @@ import {
   Building2,
   ChevronRight,
   MoreHorizontal,
+  PiggyBank,
   Plus,
   Smartphone,
   WalletCards,
@@ -40,6 +41,29 @@ const walletMeta = {
     icon: Smartphone,
     accent: "#16a34a",
     tint: "#f0fdf4",
+  },
+};
+
+const walletTypeMeta = {
+  "Bank account": {
+    type: "Bank account",
+    icon: Building2,
+  },
+  Cash: {
+    type: "Cash",
+    icon: Banknote,
+  },
+  "E-wallet": {
+    type: "E-wallet",
+    icon: Smartphone,
+  },
+  Savings: {
+    type: "Savings",
+    icon: PiggyBank,
+  },
+  "Custom wallet": {
+    type: "Custom wallet",
+    icon: WalletCards,
   },
 };
 
@@ -116,6 +140,7 @@ export default function WalletsPage() {
               textTransform: "none",
               fontWeight: 700,
               boxShadow: "none",
+              cursor: "pointer",
               "&:hover": { bgcolor: "#1f2937", boxShadow: "none" },
             }}
           >
@@ -164,7 +189,7 @@ export default function WalletsPage() {
           </div>
           <button
             type="button"
-            className="text-xs font-semibold text-[#7a828e] transition hover:text-[#111827]"
+            className="cursor-pointer text-xs font-semibold text-[#7a828e] transition hover:text-[#111827]"
           >
             Manage order
           </button>
@@ -172,9 +197,9 @@ export default function WalletsPage() {
 
         <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {wallets.map((wallet, index) => {
+            const typeMeta = walletTypeMeta[wallet.customType] ?? walletTypeMeta["Custom wallet"];
             const meta = walletMeta[wallet.name] ?? {
-              type: wallet.customType ?? "Custom wallet",
-              icon: WalletCards,
+              ...typeMeta,
               accent: wallet.color,
               tint: "#f8fafc",
             };
@@ -210,7 +235,7 @@ export default function WalletsPage() {
                   <button
                     type="button"
                     aria-label={`More options for ${wallet.name}`}
-                    className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827]"
+                    className="grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827]"
                   >
                     <MoreHorizontal size={17} />
                   </button>
@@ -233,7 +258,7 @@ export default function WalletsPage() {
                   </div>
                   <button
                     type="button"
-                    className="flex items-center gap-1 text-[11px] font-semibold text-[#6b7280] transition group-hover:text-[#111827]"
+                    className="flex cursor-pointer items-center gap-1 text-[11px] font-semibold text-[#6b7280] transition group-hover:text-[#111827]"
                   >
                     View details
                     <ChevronRight size={14} />
@@ -260,7 +285,7 @@ export default function WalletsPage() {
         <button
           type="button"
           onClick={() => setAddWalletOpen(true)}
-          className="mt-4 text-xs font-bold text-[#111827] transition hover:text-[#4b5563] sm:mt-0"
+          className="mt-4 cursor-pointer text-xs font-bold text-[#111827] transition hover:text-[#4b5563] sm:mt-0"
         >
           Add another wallet →
         </button>
@@ -292,7 +317,7 @@ export default function WalletsPage() {
                   type="button"
                   onClick={closeDialog}
                   aria-label="Close add wallet"
-                  className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827]"
+                  className="grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827]"
                 >
                   <X size={17} />
                 </button>
@@ -355,6 +380,7 @@ export default function WalletsPage() {
                     textTransform: "none",
                     fontWeight: 700,
                     boxShadow: "none",
+                    cursor: walletName.trim() ? "pointer" : "not-allowed",
                     "&:hover": { bgcolor: "#1f2937", boxShadow: "none" },
                   }}
                 >
