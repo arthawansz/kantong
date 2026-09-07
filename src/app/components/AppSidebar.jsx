@@ -29,10 +29,14 @@ export default function AppSidebar({ collapsed, onToggle }) {
   return (
     <aside
       className={`fixed inset-y-0 left-0 z-40 hidden h-[100dvh] shrink-0 border-r border-black/[0.06] bg-white transition-[width] duration-300 lg:flex lg:flex-col ${
-        collapsed ? "w-[84px] px-3 py-5" : "w-[250px] px-4 py-5"
+        collapsed ? "w-[84px] px-2 py-5" : "w-[250px] px-4 py-5"
       }`}
     >
-      <div className={`relative flex items-center ${collapsed ? "justify-center" : "justify-between px-2"}`}>
+      <div
+        className={`flex items-center ${
+          collapsed ? "justify-between gap-1 px-0.5" : "justify-between px-2"
+        }`}
+      >
         <Link href="/dashboard" className="flex min-w-0 items-center gap-2.5">
           <Image
             src={LogoLight}
@@ -56,11 +60,11 @@ export default function AppSidebar({ collapsed, onToggle }) {
           type="button"
           onClick={onToggle}
           aria-label={collapsed ? "Open sidebar" : "Close sidebar"}
-          className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-black/[0.07] bg-white text-[#6b7280] shadow-sm transition hover:bg-[#f7f8fa] hover:text-[#111827] ${
-            collapsed ? "absolute -right-4 top-1/2 z-50 -translate-y-1/2" : ""
+          className={`grid shrink-0 place-items-center rounded-lg border border-black/[0.07] bg-white text-[#6b7280] shadow-sm transition hover:bg-[#f7f8fa] hover:text-[#111827] ${
+            collapsed ? "h-7 w-7" : "h-8 w-8"
           }`}
         >
-          {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+          {collapsed ? <ChevronRight size={15} /> : <ChevronLeft size={16} />}
         </button>
       </div>
 
