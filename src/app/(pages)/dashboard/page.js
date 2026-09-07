@@ -85,10 +85,12 @@ export default function DashboardPage() {
                 variant="contained"
                 startIcon={<Plus size={17} />}
                 sx={{
-                  bgcolor: "#ffffff",
-                  color: "#111827",
+                  bgcolor: "#111827",
+                  color: "#ffff",
+                  border,
+                  borderColor: "#ffffff",
                   px: 2,
-                  "&:hover": { bgcolor: "#f3f4f6" },
+                  "&:hover": { bgcolor: "#19243a" },
                 }}
               >
                 Transaction
