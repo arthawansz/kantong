@@ -208,7 +208,7 @@ export default function DashboardPage() {
                     <span className="text-sm font-medium">{item.label}</span>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-semibold text-[#dc2626]">{money(item.value)}</p>
+                    <p className="text-sm font-semibold">{money(item.value)}</p>
                     <p className="text-[10px] text-[#9ca3af]">{item.percent}%</p>
                   </div>
                 </div>
