@@ -1,8 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { Avatar, Tooltip } from "@mui/material";
-import { Bell, ChevronDown, PanelLeft, Search } from "lucide-react";
+import {
+  Bell,
+  ChevronDown,
+  Menu,
+  PanelLeft,
+  Search,
+  User,
+} from "lucide-react";
 
 const titles = {
   "/dashboard": "Overview",
@@ -16,6 +24,7 @@ const titles = {
 export default function AppHeader({ collapsed, onToggle }) {
   const pathname = usePathname();
   const title = titles[pathname] ?? "KANTONG";
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header
@@ -44,30 +53,71 @@ export default function AppHeader({ collapsed, onToggle }) {
         </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-        <Tooltip title="Search">
-          <button className="grid h-9 w-9 place-items-center rounded-xl border border-black/[0.06] bg-white text-[#6b7280] transition hover:text-[#111827] sm:h-10 sm:w-10">
-            <Search size={17} />
-          </button>
-        </Tooltip>
+      <div className="relative shrink-0">
+        <div className="hidden items-center gap-2 md:flex">
+          <Tooltip title="Search">
+            <button className="grid h-10 w-10 place-items-center rounded-xl border border-black/[0.06] bg-white text-[#6b7280] transition hover:text-[#111827]">
+              <Search size={18} />
+            </button>
+          </Tooltip>
 
-        <Tooltip title="Notifications">
-          <button className="relative grid h-9 w-9 place-items-center rounded-xl border border-black/[0.06] bg-white text-[#6b7280] transition hover:text-[#111827] sm:h-10 sm:w-10">
-            <Bell size={17} />
-            <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#ef4444] sm:right-2.5 sm:top-2.5" />
-          </button>
-        </Tooltip>
+          <Tooltip title="Notifications">
+            <button className="relative grid h-10 w-10 place-items-center rounded-xl border border-black/[0.06] bg-white text-[#6b7280] transition hover:text-[#111827]">
+              <Bell size={18} />
+              <span className="absolute right-2.5 top-2.5 h-1.5 w-1.5 rounded-full bg-[#ef4444]" />
+            </button>
+          </Tooltip>
 
-        <div className="ml-0.5 hidden items-center gap-2 rounded-xl border border-black/[0.06] bg-white px-2 py-1.5 md:flex">
-          <Avatar sx={{ width: 30, height: 30, bgcolor: "#111827", fontSize: 12, fontWeight: 800 }}>
-            AP
-          </Avatar>
-          <div className="pr-1">
-            <p className="text-xs font-semibold leading-none">Artha</p>
-            <p className="mt-1 text-[10px] text-[#9ca3af]">Personal</p>
+          <div className="ml-1 flex items-center gap-2 rounded-xl border border-black/[0.06] bg-white px-2 py-1.5">
+            <Avatar sx={{ width: 30, height: 30, bgcolor: "#111827", fontSize: 12, fontWeight: 800 }}>
+              AP
+            </Avatar>
+            <div className="pr-1">
+              <p className="text-xs font-semibold leading-none">Artha</p>
+              <p className="mt-1 text-[10px] text-[#9ca3af]">Personal</p>
+            </div>
+            <ChevronDown size={14} className="text-[#9ca3af]" />
           </div>
-          <ChevronDown size={14} className="text-[#9ca3af]" />
         </div>
+
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen((value) => !value)}
+          aria-label="Open header menu"
+          aria-expanded={mobileMenuOpen}
+          className="grid h-9 w-9 place-items-center rounded-xl border border-black/[0.06] bg-white text-[#6b7280] transition hover:text-[#111827] md:hidden"
+        >
+          <Menu size={18} />
+        </button>
+
+        {mobileMenuOpen && (
+          <div className="absolute right-0 top-[46px] w-52 overflow-hidden rounded-2xl border border-black/[0.07] bg-white p-1.5 shadow-xl shadow-black/[0.08] md:hidden">
+            <button
+              type="button"
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+            >
+              <Search size={17} />
+              Search
+            </button>
+            <button
+              type="button"
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+            >
+              <span className="relative">
+                <Bell size={17} />
+                <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[#ef4444]" />
+              </span>
+              Notifications
+            </button>
+            <button
+              type="button"
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+            >
+              <User size={17} />
+              Profile
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );
