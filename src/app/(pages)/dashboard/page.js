@@ -87,8 +87,8 @@ export default function DashboardPage() {
                 sx={{
                   bgcolor: "#111827",
                   color: "#ffff",
-                  border,
-                  borderColor: "#ffffff",
+                  border: 2,
+                  borderColor: "#fefefe",
                   px: 2,
                   "&:hover": { bgcolor: "#19243a" },
                 }}
