@@ -37,7 +37,7 @@ export default function AppHeader({ collapsed, onToggle }) {
             type="button"
             onClick={onToggle}
             aria-label={collapsed ? "Open sidebar" : "Close sidebar"}
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-[#7a828e] transition hover:bg-white hover:text-[#111827] hover:shadow-sm"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-[#7a828e] transition hover:bg-white hover:text-[#111827] hover:shadow-sm cursor-pointer"
           >
             <PanelLeft size={20} strokeWidth={1.9} />
           </button>
@@ -56,13 +56,13 @@ export default function AppHeader({ collapsed, onToggle }) {
       <div className="relative shrink-0">
         <div className="hidden items-center gap-2 md:flex">
           <Tooltip title="Search">
-            <button className="grid h-10 w-10 place-items-center rounded-xl border border-black/[0.06] bg-white text-[#6b7280] transition hover:text-[#111827]">
+            <button className="grid h-10 w-10 place-items-center rounded-xl border border-black/[0.06] bg-white text-[#6b7280] transition hover:text-[#111827] cursor-pointer">
               <Search size={18} />
             </button>
           </Tooltip>
 
           <Tooltip title="Notifications">
-            <button className="relative grid h-10 w-10 place-items-center rounded-xl border border-black/[0.06] bg-white text-[#6b7280] transition hover:text-[#111827]">
+            <button className="relative grid h-10 w-10 place-items-center rounded-xl border border-black/[0.06] bg-white text-[#6b7280] transition hover:text-[#111827] cursor-pointer">
               <Bell size={18} />
               <span className="absolute right-2.5 top-2.5 h-1.5 w-1.5 rounded-full bg-[#ef4444]" />
             </button>
