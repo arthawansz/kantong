@@ -32,7 +32,11 @@ export default function TransactionDialog({ open, onClose }) {
   const textFieldSx = {
     "& .MuiOutlinedInput-root": {
       minHeight: 56,
+      height: 56,
       borderRadius: "12px",
+    },
+    "& .MuiInputBase-input": {
+      boxSizing: "border-box",
     },
     "& .MuiInputLabel-root": {
       backgroundColor: "#ffffff",
@@ -143,6 +147,7 @@ export default function TransactionDialog({ open, onClose }) {
               type="date"
               defaultValue="2026-09-06"
               slotProps={{ inputLabel: { shrink: true } }}
+              sx={textFieldSx}
             />
             {tab === 2 && (
               <TextField
