@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Avatar, Tooltip } from "@mui/material";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Bell,
   ChevronDown,
@@ -64,6 +65,8 @@ const initialNotifications = [
   },
 ];
 
+const popupTransition = { duration: 0.18, ease: "easeOut" };
+
 function NotificationIcon({ tone }) {
   const iconClass = "h-9 w-9 shrink-0 rounded-xl grid place-items-center";
 
@@ -120,6 +123,10 @@ export default function AppHeader({ collapsed, onToggle }) {
     setMobileMenuOpen(false);
     setSearchOpen(false);
     setNotificationOpen((value) => !value);
+  };
+
+  const closeNotifications = () => {
+    setNotificationOpen(false);
   };
 
   const markAllAsRead = () => {
@@ -201,170 +208,238 @@ export default function AppHeader({ collapsed, onToggle }) {
             <Menu size={18} />
           </button>
 
-          {mobileMenuOpen && (
-            <div className="absolute right-0 top-[46px] w-52 overflow-hidden rounded-2xl border border-black/[0.07] bg-white p-1.5 shadow-xl shadow-black/[0.08] md:hidden">
-              <button
-                type="button"
-                onClick={openSearch}
-                className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                transition={popupTransition}
+                className="absolute right-0 top-[46px] w-52 origin-top-right overflow-hidden rounded-2xl border border-black/[0.07] bg-white p-1.5 shadow-xl shadow-black/[0.08] md:hidden"
               >
-                <Search size={17} />
-                Search
-              </button>
-              <button
-                type="button"
-                onClick={openNotifications}
-                className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
-              >
-                <span className="relative">
-                  <Bell size={17} />
-                  {unreadCount > 0 && (
-                    <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[#ef4444]" />
-                  )}
-                </span>
-                Notifications
-              </button>
-              <button
-                type="button"
-                className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
-              >
-                <User size={17} />
-                Profile
-              </button>
-            </div>
-          )}
-
-          {notificationOpen && (
-            <div className="fixed left-4 right-4 top-[78px] z-50 overflow-hidden rounded-2xl border border-black/[0.07] bg-white shadow-2xl shadow-black/[0.12] sm:left-auto sm:right-5 sm:w-[380px] md:absolute md:right-0 md:top-[50px] lg:right-0">
-              <div className="flex items-center justify-between border-b border-black/[0.06] px-4 py-3.5">
-                <div>
-                  <p className="text-sm font-bold text-[#111827]">Notifications</p>
-                  <p className="mt-0.5 text-[11px] text-[#9ca3af]">
-                    {unreadCount > 0 ? `${unreadCount} unread updates` : "You're all caught up"}
-                  </p>
-                </div>
                 <button
                   type="button"
-                  onClick={markAllAsRead}
-                  className="text-[11px] font-semibold text-[#6b7280] transition hover:text-[#111827]"
+                  onClick={openSearch}
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
                 >
-                  Mark all as read
+                  <Search size={17} />
+                  Search
                 </button>
-              </div>
+                <button
+                  type="button"
+                  onClick={openNotifications}
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+                >
+                  <span className="relative">
+                    <Bell size={17} />
+                    {unreadCount > 0 && (
+                      <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-[#ef4444]" />
+                    )}
+                  </span>
+                  Notifications
+                </button>
+                <button
+                  type="button"
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+                >
+                  <User size={17} />
+                  Profile
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-              <div className="max-h-[360px] overflow-y-auto p-2">
-                {notifications.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() =>
-                      setNotifications((items) =>
-                        items.map((notification) =>
-                          notification.id === item.id ? { ...notification, read: true } : notification
-                        )
-                      )
-                    }
-                    className={`flex w-full gap-3 rounded-xl px-3 py-3 text-left transition hover:bg-[#f7f8fa] ${
-                      item.read ? "bg-white" : "bg-[#f8fafc]"
-                    }`}
-                  >
-                    <NotificationIcon tone={item.tone} />
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-start gap-2">
-                        <p className="flex-1 text-[13px] font-semibold leading-5 text-[#111827]">{item.title}</p>
-                        {!item.read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#111827]" />}
-                      </div>
-                      <p className="mt-0.5 text-[11px] leading-4 text-[#8a919d]">{item.description}</p>
-                      <p className="mt-1.5 text-[10px] font-medium text-[#b0b5bd]">{item.time}</p>
+          <AnimatePresence>
+            {notificationOpen && (
+              <>
+                <motion.button
+                  type="button"
+                  aria-label="Close notifications"
+                  onClick={closeNotifications}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.16 }}
+                  className="fixed inset-0 z-[45] bg-[#111827]/20 backdrop-blur-[1px] md:hidden"
+                />
+
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.97 }}
+                  transition={popupTransition}
+                  className="fixed left-4 right-4 top-[78px] z-50 origin-top-right overflow-hidden rounded-2xl border border-black/[0.07] bg-white shadow-2xl shadow-black/[0.12] sm:left-auto sm:right-5 sm:w-[380px] md:absolute md:right-0 md:top-[50px] lg:right-0"
+                >
+                  <div className="flex items-center justify-between border-b border-black/[0.06] px-4 py-3.5">
+                    <div>
+                      <p className="text-sm font-bold text-[#111827]">Notifications</p>
+                      <p className="mt-0.5 text-[11px] text-[#9ca3af]">
+                        {unreadCount > 0 ? `${unreadCount} unread updates` : "You're all caught up"}
+                      </p>
                     </div>
-                  </button>
-                ))}
-              </div>
 
-              <div className="border-t border-black/[0.06] p-2">
-                <button
-                  type="button"
-                  className="w-full rounded-xl px-3 py-2.5 text-center text-xs font-semibold text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
-                >
-                  View all notifications
-                </button>
-              </div>
-            </div>
-          )}
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={markAllAsRead}
+                        className="text-[11px] font-semibold text-[#6b7280] transition hover:text-[#111827]"
+                      >
+                        Mark all as read
+                      </button>
+                      <button
+                        type="button"
+                        onClick={closeNotifications}
+                        aria-label="Close notifications"
+                        className="grid h-8 w-8 place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827]"
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="max-h-[360px] overflow-y-auto p-2">
+                    {notifications.map((item, index) => (
+                      <motion.button
+                        key={item.id}
+                        type="button"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.18, delay: index * 0.035 }}
+                        onClick={() =>
+                          setNotifications((items) =>
+                            items.map((notification) =>
+                              notification.id === item.id ? { ...notification, read: true } : notification
+                            )
+                          )
+                        }
+                        className={`flex w-full gap-3 rounded-xl px-3 py-3 text-left transition hover:bg-[#f7f8fa] ${
+                          item.read ? "bg-white" : "bg-[#f8fafc]"
+                        }`}
+                      >
+                        <NotificationIcon tone={item.tone} />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-start gap-2">
+                            <p className="flex-1 text-[13px] font-semibold leading-5 text-[#111827]">{item.title}</p>
+                            {!item.read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-[#111827]" />}
+                          </div>
+                          <p className="mt-0.5 text-[11px] leading-4 text-[#8a919d]">{item.description}</p>
+                          <p className="mt-1.5 text-[10px] font-medium text-[#b0b5bd]">{item.time}</p>
+                        </div>
+                      </motion.button>
+                    ))}
+                  </div>
+
+                  <div className="border-t border-black/[0.06] p-2">
+                    <button
+                      type="button"
+                      className="w-full rounded-xl px-3 py-2.5 text-center text-xs font-semibold text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+                    >
+                      View all notifications
+                    </button>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </div>
       </header>
 
-      {searchOpen && (
-        <div className="fixed inset-0 z-[100] flex items-start justify-center px-4 pt-[9vh] sm:px-6">
-          <button
-            type="button"
-            aria-label="Close search"
-            onClick={() => setSearchOpen(false)}
-            className="absolute inset-0 bg-[#111827]/35 backdrop-blur-[2px]"
-          />
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            className="fixed inset-0 z-[100] flex items-start justify-center px-4 pt-[9vh] sm:px-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.16 }}
+          >
+            <motion.button
+              type="button"
+              aria-label="Close search"
+              onClick={() => setSearchOpen(false)}
+              className="absolute inset-0 bg-[#111827]/35 backdrop-blur-[2px]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.16 }}
+            />
 
-          <div className="relative w-full max-w-2xl overflow-hidden rounded-[22px] border border-black/[0.08] bg-white shadow-2xl shadow-black/[0.18]">
-            <div className="flex items-center gap-3 border-b border-black/[0.06] px-4 py-4 sm:px-5">
-              <Search size={19} className="shrink-0 text-[#111827]" />
-              <input
-                autoFocus
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Search wallets, transactions, pages..."
-                className="min-w-0 flex-1 bg-transparent text-sm text-[#111827] outline-none placeholder:text-[#9ca3af] sm:text-base"
-              />
-              <button
-                type="button"
-                onClick={() => setSearchOpen(false)}
-                className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827]"
-              >
-                <X size={17} />
-              </button>
-            </div>
-
-            <div className="max-h-[420px] overflow-y-auto p-2 sm:p-3">
-              <div className="px-2 pb-2 pt-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#a0a6af]">
-                {searchQuery ? "Search results" : "Quick access"}
+            <motion.div
+              initial={{ opacity: 0, y: -18, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -18, scale: 0.97 }}
+              transition={popupTransition}
+              className="relative w-full max-w-2xl origin-top overflow-hidden rounded-[22px] border border-black/[0.08] bg-white shadow-2xl shadow-black/[0.18]"
+            >
+              <div className="flex items-center gap-3 border-b border-black/[0.06] px-4 py-4 sm:px-5">
+                <Search size={19} className="shrink-0 text-[#111827]" />
+                <input
+                  autoFocus
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Search wallets, transactions, pages..."
+                  className="min-w-0 flex-1 bg-transparent text-sm text-[#111827] outline-none placeholder:text-[#9ca3af] sm:text-base"
+                />
+                <button
+                  type="button"
+                  onClick={() => setSearchOpen(false)}
+                  className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827]"
+                >
+                  <X size={17} />
+                </button>
               </div>
 
-              {searchResults.length > 0 ? (
-                <div className="space-y-1">
-                  {searchResults.map((item) => (
-                    <a
-                      key={`${item.type}-${item.title}`}
-                      href={item.href}
-                      className="flex items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-[#f7f8fa]"
-                    >
-                      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#f1f3f5] text-[#6b7280]">
-                        {item.type === "Wallet" ? <WalletCards size={17} /> : <Search size={16} />}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <p className="truncate text-sm font-semibold text-[#111827]">{item.title}</p>
-                          <span className="rounded-md bg-[#f1f3f5] px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#8a919d]">
-                            {item.type}
-                          </span>
-                        </div>
-                        <p className="mt-0.5 truncate text-[11px] text-[#9ca3af]">{item.subtitle}</p>
-                      </div>
-                    </a>
-                  ))}
+              <div className="max-h-[420px] overflow-y-auto p-2 sm:p-3">
+                <div className="px-2 pb-2 pt-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[#a0a6af]">
+                  {searchQuery ? "Search results" : "Quick access"}
                 </div>
-              ) : (
-                <div className="px-4 py-12 text-center">
-                  <p className="text-sm font-semibold text-[#374151]">No results found</p>
-                  <p className="mt-1 text-xs text-[#9ca3af]">Try searching with another keyword.</p>
-                </div>
-              )}
-            </div>
 
-            <div className="flex items-center justify-between border-t border-black/[0.06] bg-[#fafafa] px-4 py-3 text-[10px] text-[#9ca3af] sm:px-5">
-              <span>Frontend preview · mock data</span>
-              <span>ESC to close</span>
-            </div>
-          </div>
-        </div>
-      )}
+                {searchResults.length > 0 ? (
+                  <div className="space-y-1">
+                    {searchResults.map((item, index) => (
+                      <motion.a
+                        key={`${item.type}-${item.title}`}
+                        href={item.href}
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.16, delay: index * 0.025 }}
+                        className="flex items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-[#f7f8fa]"
+                      >
+                        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#f1f3f5] text-[#6b7280]">
+                          {item.type === "Wallet" ? <WalletCards size={17} /> : <Search size={16} />}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <p className="truncate text-sm font-semibold text-[#111827]">{item.title}</p>
+                            <span className="rounded-md bg-[#f1f3f5] px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#8a919d]">
+                              {item.type}
+                            </span>
+                          </div>
+                          <p className="mt-0.5 truncate text-[11px] text-[#9ca3af]">{item.subtitle}</p>
+                        </div>
+                      </motion.a>
+                    ))}
+                  </div>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="px-4 py-12 text-center"
+                  >
+                    <p className="text-sm font-semibold text-[#374151]">No results found</p>
+                    <p className="mt-1 text-xs text-[#9ca3af]">Try searching with another keyword.</p>
+                  </motion.div>
+                )}
+              </div>
+
+              <div className="flex items-center justify-between border-t border-black/[0.06] bg-[#fafafa] px-4 py-3 text-[10px] text-[#9ca3af] sm:px-5">
+                <span>Frontend preview · mock data</span>
+                <span>ESC to close</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
