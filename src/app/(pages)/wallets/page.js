@@ -51,7 +51,7 @@ const walletVisuals = {
 
 const quickStats = [
   { label: "Money in", value: 4250000, helper: "This month" },
-  { label: "Money out", value: 1930000, helper: "This month" },
+  { label: "Money out", value: 1930000, helper: "This month", negative: true },
   { label: "Wallets", value: 3, helper: "Active wallets", compact: true },
 ];
 
@@ -221,7 +221,7 @@ export default function WalletsPage() {
                 {quickStats.map((stat) => (
                   <div key={stat.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.045] px-4 py-3.5">
                     <p className="text-[11px] font-medium text-white/45">{stat.label}</p>
-                    <p className="mt-1.5 text-sm font-semibold tracking-[-0.02em]">{stat.compact ? activeWallets.length : money(stat.value)}</p>
+                    <p className={`mt-1.5 text-sm font-semibold tracking-[-0.02em] ${stat.negative ? "text-red-300" : ""}`}>{stat.compact ? activeWallets.length : money(stat.value)}</p>
                     <p className="mt-1 text-[10px] text-white/35">{stat.helper}</p>
                   </div>
                 ))}
@@ -254,7 +254,9 @@ export default function WalletsPage() {
                 transition={{ duration: 0.2, delay: index * 0.04 }}
                 className={`group relative overflow-visible rounded-[20px] border border-black/[0.06] bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/[0.04] ${wallet.archived ? "opacity-55" : ""}`}
               >
-                <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full opacity-70" style={{ backgroundColor: visuals.tint }} />
+                <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[20px]">
+                  <div className="absolute -right-10 -top-10 h-28 w-28 rounded-full opacity-70" style={{ backgroundColor: visuals.tint }} />
+                </div>
                 <div className="relative flex items-start justify-between gap-4">
                   <div className="flex min-w-0 items-center gap-3">
                     <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl" style={{ backgroundColor: visuals.tint, color: visuals.accent }}>
@@ -350,7 +352,7 @@ export default function WalletsPage() {
             </DialogTitle>
             <DialogContent sx={{ px: 3, pb: 3 }}>
               <div className="rounded-2xl bg-[#111827] p-5 text-white"><p className="text-xs text-white/55">Current balance</p><p className="mt-2 text-3xl font-bold tracking-[-0.04em]">{money(detailsWallet.amount)}</p><p className="mt-2 text-[11px] text-white/40">{detailsWallet.archived ? "Archived wallet" : "Active wallet"}</p></div>
-              <div className="mt-5"><p className="text-sm font-bold">Recent activity</p><div className="mt-3 divide-y divide-black/[0.06]">{recentActivity.filter((item) => item.wallet === detailsWallet.name).length ? recentActivity.filter((item) => item.wallet === detailsWallet.name).map((item) => <div key={`${item.title}-${item.time}`} className="flex items-center justify-between gap-4 py-3"><div><p className="text-sm font-semibold">{item.title}</p><p className="mt-1 text-[11px] text-[#9ca3af]">{item.time}</p></div><p className={`text-sm font-bold ${item.amount > 0 ? "text-emerald-700" : "text-[#111827]"}`}>{item.amount > 0 ? "+" : "−"}{money(Math.abs(item.amount))}</p></div>) : <div className="py-8 text-center text-xs text-[#9ca3af]">No mock activity yet for this wallet.</div>}</div></div>
+              <div className="mt-5"><p className="text-sm font-bold">Recent activity</p><div className="mt-3 divide-y divide-black/[0.06]">{recentActivity.filter((item) => item.wallet === detailsWallet.name).length ? recentActivity.filter((item) => item.wallet === detailsWallet.name).map((item) => <div key={`${item.title}-${item.time}`} className="flex items-center justify-between gap-4 py-3"><div><p className="text-sm font-semibold">{item.title}</p><p className="mt-1 text-[11px] text-[#9ca3af]">{item.time}</p></div><p className={`text-sm font-bold ${item.amount > 0 ? "text-emerald-700" : "text-red-600"}`}>{item.amount > 0 ? "+" : "−"}{money(Math.abs(item.amount))}</p></div>) : <div className="py-8 text-center text-xs text-[#9ca3af]">No mock activity yet for this wallet.</div>}</div></div>
             </DialogContent>
           </>
         )}
