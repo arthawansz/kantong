@@ -50,7 +50,7 @@ const walletVisuals = {
 };
 
 const quickStats = [
-  { label: "Money in", value: 4250000, helper: "This month" },
+  { label: "Money in", value: 4250000, helper: "This month", positive: true },
   { label: "Money out", value: 1930000, helper: "This month", negative: true },
   { label: "Wallets", value: 3, helper: "Active wallets", compact: true },
 ];
@@ -221,7 +221,7 @@ export default function WalletsPage() {
                 {quickStats.map((stat) => (
                   <div key={stat.label} className="rounded-2xl border border-white/[0.08] bg-white/[0.045] px-4 py-3.5">
                     <p className="text-[11px] font-medium text-white/45">{stat.label}</p>
-                    <p className={`mt-1.5 text-sm font-semibold tracking-[-0.02em] ${stat.negative ? "text-red-300" : ""}`}>{stat.compact ? activeWallets.length : money(stat.value)}</p>
+                    <p className={`mt-1.5 text-sm font-semibold tracking-[-0.02em] ${stat.negative ? "text-red-300" : stat.positive ? "text-green-300" : ""} `}>{stat.compact ? activeWallets.length : money(stat.value)}</p>
                     <p className="mt-1 text-[10px] text-white/35">{stat.helper}</p>
                   </div>
                 ))}

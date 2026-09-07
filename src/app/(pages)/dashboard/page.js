@@ -84,7 +84,7 @@ export default function DashboardPage() {
                 type="button"
                 onClick={() => setDialogOpen(true)}
                 aria-label="Add transaction"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border-2 border-[#bbbbcc] bg-[#111827] text-white transition hover:bg-[#19243a] sm:hidden"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border-1 border-[#bbbbcc] bg-[#111827] text-white transition hover:bg-[#19243a] sm:hidden"
               >
                 <Plus size={18} />
               </button>
@@ -97,7 +97,7 @@ export default function DashboardPage() {
                 sx={{
                   bgcolor: "#111827",
                   color: "#ffffff",
-                  border: 2,
+                  border: 1,
                   borderColor: "#fefefe",
                   px: 2,
                   "&:hover": { bgcolor: "#19243a" },
