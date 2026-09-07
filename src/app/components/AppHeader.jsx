@@ -8,9 +8,11 @@ import {
   Bell,
   ChevronDown,
   CircleDollarSign,
+  LogOut,
   Menu,
   PanelLeft,
   Search,
+  Settings,
   TrendingUp,
   User,
   WalletCards,
@@ -99,6 +101,7 @@ export default function AppHeader({ collapsed, onToggle }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [notifications, setNotifications] = useState(initialNotifications);
 
@@ -116,18 +119,26 @@ export default function AppHeader({ collapsed, onToggle }) {
   const openSearch = () => {
     setMobileMenuOpen(false);
     setNotificationOpen(false);
+    setProfileOpen(false);
     setSearchOpen(true);
   };
 
   const openNotifications = () => {
     setMobileMenuOpen(false);
     setSearchOpen(false);
+    setProfileOpen(false);
     setNotificationOpen((value) => !value);
   };
 
-  const closeNotifications = () => {
+  const openProfile = () => {
+    setMobileMenuOpen(false);
+    setSearchOpen(false);
     setNotificationOpen(false);
+    setProfileOpen((value) => !value);
   };
+
+  const closeNotifications = () => setNotificationOpen(false);
+  const closeProfile = () => setProfileOpen(false);
 
   const markAllAsRead = () => {
     setNotifications((items) => items.map((item) => ({ ...item, read: true })));
@@ -186,7 +197,12 @@ export default function AppHeader({ collapsed, onToggle }) {
               </button>
             </Tooltip>
 
-            <div className="ml-1 flex items-center gap-2 rounded-xl border border-black/[0.06] bg-white px-2 py-1.5">
+            <button
+              type="button"
+              onClick={openProfile}
+              aria-expanded={profileOpen}
+              className="ml-1 flex cursor-pointer items-center gap-2 rounded-xl border border-black/[0.06] bg-white px-2 py-1.5 text-left transition hover:border-black/[0.1] hover:shadow-sm"
+            >
               <Avatar sx={{ width: 30, height: 30, bgcolor: "#111827", fontSize: 12, fontWeight: 800 }}>
                 AP
               </Avatar>
@@ -194,8 +210,10 @@ export default function AppHeader({ collapsed, onToggle }) {
                 <p className="text-xs font-semibold leading-none">Artha</p>
                 <p className="mt-1 text-[10px] text-[#9ca3af]">Personal</p>
               </div>
-              <ChevronDown size={14} className="text-[#9ca3af]" />
-            </div>
+              <motion.div animate={{ rotate: profileOpen ? 180 : 0 }} transition={{ duration: 0.18 }}>
+                <ChevronDown size={14} className="text-[#9ca3af]" />
+              </motion.div>
+            </button>
           </div>
 
           <button
@@ -240,6 +258,7 @@ export default function AppHeader({ collapsed, onToggle }) {
                 </button>
                 <button
                   type="button"
+                  onClick={openProfile}
                   className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
                 >
                   <User size={17} />
@@ -336,6 +355,78 @@ export default function AppHeader({ collapsed, onToggle }) {
                     >
                       View all notifications
                     </button>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {profileOpen && (
+              <>
+                <motion.button
+                  type="button"
+                  aria-label="Close profile menu"
+                  onClick={closeProfile}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.16 }}
+                  className="fixed inset-0 z-[45] bg-[#111827]/20 backdrop-blur-[1px] md:hidden"
+                />
+
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.96 }}
+                  transition={popupTransition}
+                  className="fixed left-4 right-4 top-[78px] z-50 origin-top-right overflow-hidden rounded-2xl border border-black/[0.07] bg-white shadow-2xl shadow-black/[0.12] sm:left-auto sm:right-5 sm:w-[300px] md:absolute md:right-0 md:top-[50px]"
+                >
+                  <div className="flex items-center gap-3 border-b border-black/[0.06] px-4 py-4">
+                    <Avatar sx={{ width: 42, height: 42, bgcolor: "#111827", fontSize: 14, fontWeight: 800 }}>
+                      AP
+                    </Avatar>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-bold text-[#111827]">Artha</p>
+                      <p className="mt-0.5 truncate text-[11px] text-[#9ca3af]">Personal account</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={closeProfile}
+                      aria-label="Close profile menu"
+                      className="grid h-8 w-8 place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827] md:hidden"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+
+                  <div className="p-2">
+                    <button
+                      type="button"
+                      onClick={closeProfile}
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+                    >
+                      <User size={17} />
+                      Profile
+                    </button>
+                    <a
+                      href="/settings"
+                      onClick={closeProfile}
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+                    >
+                      <Settings size={17} />
+                      Settings
+                    </a>
+                  </div>
+
+                  <div className="border-t border-black/[0.06] p-2">
+                    <a
+                      href="/login"
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#dc2626] transition hover:bg-red-50"
+                    >
+                      <LogOut size={17} />
+                      Sign out
+                    </a>
                   </div>
                 </motion.div>
               </>
