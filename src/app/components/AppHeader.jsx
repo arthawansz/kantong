@@ -25,6 +25,7 @@ const titles = {
   "/transactions": "Transactions",
   "/categories": "Categories",
   "/analytics": "Analytics",
+  "/profile": "Profile",
   "/settings": "Settings",
 };
 
@@ -34,6 +35,7 @@ const searchableItems = [
   { title: "Transactions", subtitle: "Review income, expenses and transfers", href: "/transactions", type: "Page" },
   { title: "Categories", subtitle: "Manage spending categories", href: "/categories", type: "Page" },
   { title: "Analytics", subtitle: "Explore cash flow and spending trends", href: "/analytics", type: "Page" },
+  { title: "Profile", subtitle: "Personal information and finance preferences", href: "/profile", type: "Page" },
   { title: "Settings", subtitle: "Account and application preferences", href: "/settings", type: "Page" },
   { title: "BCA", subtitle: "Wallet · Rp 4.850.000", href: "/wallets", type: "Wallet" },
   { title: "Cash", subtitle: "Wallet · Rp 850.000", href: "/wallets", type: "Wallet" },
@@ -221,7 +223,7 @@ export default function AppHeader({ collapsed, onToggle }) {
             onClick={() => setMobileMenuOpen((value) => !value)}
             aria-label="Open header menu"
             aria-expanded={mobileMenuOpen}
-            className="grid h-9 w-9 place-items-center rounded-xl border border-black/[0.06] bg-white text-[#6b7280] transition hover:text-[#111827] md:hidden"
+            className="grid h-9 w-9 cursor-pointer place-items-center rounded-xl border border-black/[0.06] bg-white text-[#6b7280] transition hover:text-[#111827] md:hidden"
           >
             <Menu size={18} />
           </button>
@@ -238,7 +240,7 @@ export default function AppHeader({ collapsed, onToggle }) {
                 <button
                   type="button"
                   onClick={openSearch}
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+                  className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
                 >
                   <Search size={17} />
                   Search
@@ -246,7 +248,7 @@ export default function AppHeader({ collapsed, onToggle }) {
                 <button
                   type="button"
                   onClick={openNotifications}
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+                  className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
                 >
                   <span className="relative">
                     <Bell size={17} />
@@ -259,7 +261,7 @@ export default function AppHeader({ collapsed, onToggle }) {
                 <button
                   type="button"
                   onClick={openProfile}
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+                  className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
                 >
                   <User size={17} />
                   Profile
@@ -279,7 +281,7 @@ export default function AppHeader({ collapsed, onToggle }) {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.16 }}
-                  className="fixed inset-0 z-[45] bg-[#111827]/20 backdrop-blur-[1px] md:hidden"
+                  className="fixed inset-0 z-[45] cursor-pointer bg-[#111827]/20 backdrop-blur-[1px] md:hidden"
                 />
 
                 <motion.div
@@ -301,7 +303,7 @@ export default function AppHeader({ collapsed, onToggle }) {
                       <button
                         type="button"
                         onClick={markAllAsRead}
-                        className="text-[11px] font-semibold text-[#6b7280] transition hover:text-[#111827]"
+                        className="cursor-pointer text-[11px] font-semibold text-[#6b7280] transition hover:text-[#111827]"
                       >
                         Mark all as read
                       </button>
@@ -309,7 +311,7 @@ export default function AppHeader({ collapsed, onToggle }) {
                         type="button"
                         onClick={closeNotifications}
                         aria-label="Close notifications"
-                        className="grid h-8 w-8 place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827]"
+                        className="grid h-8 w-8 cursor-pointer place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827]"
                       >
                         <X size={16} />
                       </button>
@@ -331,7 +333,7 @@ export default function AppHeader({ collapsed, onToggle }) {
                             )
                           )
                         }
-                        className={`flex w-full gap-3 rounded-xl px-3 py-3 text-left transition hover:bg-[#f7f8fa] ${
+                        className={`flex w-full cursor-pointer gap-3 rounded-xl px-3 py-3 text-left transition hover:bg-[#f7f8fa] ${
                           item.read ? "bg-white" : "bg-[#f8fafc]"
                         }`}
                       >
@@ -351,7 +353,7 @@ export default function AppHeader({ collapsed, onToggle }) {
                   <div className="border-t border-black/[0.06] p-2">
                     <button
                       type="button"
-                      className="w-full rounded-xl px-3 py-2.5 text-center text-xs font-semibold text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+                      className="w-full cursor-pointer rounded-xl px-3 py-2.5 text-center text-xs font-semibold text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
                     >
                       View all notifications
                     </button>
@@ -372,7 +374,7 @@ export default function AppHeader({ collapsed, onToggle }) {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.16 }}
-                  className="fixed inset-0 z-[45] bg-[#111827]/20 backdrop-blur-[1px] md:hidden"
+                  className="fixed inset-0 z-[45] cursor-pointer bg-[#111827]/20 backdrop-blur-[1px] md:hidden"
                 />
 
                 <motion.div
@@ -394,25 +396,25 @@ export default function AppHeader({ collapsed, onToggle }) {
                       type="button"
                       onClick={closeProfile}
                       aria-label="Close profile menu"
-                      className="grid h-8 w-8 place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827] md:hidden"
+                      className="grid h-8 w-8 cursor-pointer place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827] md:hidden"
                     >
                       <X size={16} />
                     </button>
                   </div>
 
                   <div className="p-2">
-                    <button
-                      type="button"
+                    <a
+                      href="/profile"
                       onClick={closeProfile}
-                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+                      className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
                     >
                       <User size={17} />
                       Profile
-                    </button>
+                    </a>
                     <a
                       href="/settings"
                       onClick={closeProfile}
-                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
+                      className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-[#4b5563] transition hover:bg-[#f7f8fa] hover:text-[#111827]"
                     >
                       <Settings size={17} />
                       Settings
@@ -422,7 +424,7 @@ export default function AppHeader({ collapsed, onToggle }) {
                   <div className="border-t border-black/[0.06] p-2">
                     <a
                       href="/login"
-                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#dc2626] transition hover:bg-red-50"
+                      className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#dc2626] transition hover:bg-red-50"
                     >
                       <LogOut size={17} />
                       Sign out
@@ -448,7 +450,7 @@ export default function AppHeader({ collapsed, onToggle }) {
               type="button"
               aria-label="Close search"
               onClick={() => setSearchOpen(false)}
-              className="absolute inset-0 bg-[#111827]/35 backdrop-blur-[2px]"
+              className="absolute inset-0 cursor-pointer bg-[#111827]/35 backdrop-blur-[2px]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -474,7 +476,7 @@ export default function AppHeader({ collapsed, onToggle }) {
                 <button
                   type="button"
                   onClick={() => setSearchOpen(false)}
-                  className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827]"
+                  className="grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827]"
                 >
                   <X size={17} />
                 </button>
@@ -494,7 +496,7 @@ export default function AppHeader({ collapsed, onToggle }) {
                         initial={{ opacity: 0, y: 5 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.16, delay: index * 0.025 }}
-                        className="flex items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-[#f7f8fa]"
+                        className="flex cursor-pointer items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-[#f7f8fa]"
                       >
                         <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#f1f3f5] text-[#6b7280]">
                           {item.type === "Wallet" ? <WalletCards size={17} /> : <Search size={16} />}
