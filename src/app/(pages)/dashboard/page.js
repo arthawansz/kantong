@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Button, Chip, Divider } from "@mui/material";
+import Link from "next/link";
+import { Button, Chip, Divider, Menu, MenuItem } from "@mui/material";
 import {
   ChevronDown,
   CircleDollarSign,
@@ -61,12 +62,38 @@ const transactionIcons = {
   transfer: { icon: Landmark, bg: "#dbeafe" },
 };
 
+const cashFlowRanges = {
+  "Last 7 days": chartData,
+  "Last 30 days": [
+    { day: "W1", income: 3100000, expense: 1480000 },
+    { day: "W2", income: 2750000, expense: 1650000 },
+    { day: "W3", income: 3920000, expense: 1820000 },
+    { day: "W4", income: 4250000, expense: 1930000 },
+  ],
+  "This month": [
+    { day: "1–7", income: 940000, expense: 510000 },
+    { day: "8–14", income: 1180000, expense: 460000 },
+    { day: "15–21", income: 870000, expense: 420000 },
+    { day: "22–30", income: 1260000, expense: 540000 },
+  ],
+};
+
 export default function DashboardPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [cashFlowAnchor, setCashFlowAnchor] = useState(null);
+  const [cashFlowRange, setCashFlowRange] = useState("Last 7 days");
+
   const totalBalance = useMemo(
     () => wallets.reduce((total, wallet) => total + wallet.amount, 0),
     []
   );
+
+  const selectedChartData = cashFlowRanges[cashFlowRange] ?? chartData;
+
+  const handleCashFlowRange = (range) => {
+    setCashFlowRange(range);
+    setCashFlowAnchor(null);
+  };
 
   return (
     <>
@@ -147,16 +174,52 @@ export default function DashboardPage() {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-sm font-semibold">Cash flow</p>
-              <p className="mt-1 text-xs text-[#9ca3af]">Income and expenses over the last 7 days</p>
+              <p className="mt-1 text-xs text-[#9ca3af]">Income and expenses over {cashFlowRange.toLowerCase()}</p>
             </div>
-            <Button size="small" endIcon={<ChevronDown size={14} />} sx={{ color: "#6b7280", cursor: "pointer" }}>
-              Last 7 days
+            <Button
+              size="small"
+              endIcon={<ChevronDown size={14} />}
+              onClick={(event) => setCashFlowAnchor(event.currentTarget)}
+              aria-controls={cashFlowAnchor ? "cash-flow-range-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={cashFlowAnchor ? "true" : undefined}
+              sx={{ color: "#6b7280", cursor: "pointer", textTransform: "none" }}
+            >
+              {cashFlowRange}
             </Button>
+            <Menu
+              id="cash-flow-range-menu"
+              anchorEl={cashFlowAnchor}
+              open={Boolean(cashFlowAnchor)}
+              onClose={() => setCashFlowAnchor(null)}
+              slotProps={{
+                paper: {
+                  sx: {
+                    mt: 0.75,
+                    minWidth: 150,
+                    borderRadius: "12px",
+                    border: "1px solid rgba(17,24,39,.07)",
+                    boxShadow: "0 12px 32px rgba(17,24,39,.08)",
+                  },
+                },
+              }}
+            >
+              {Object.keys(cashFlowRanges).map((range) => (
+                <MenuItem
+                  key={range}
+                  selected={range === cashFlowRange}
+                  onClick={() => handleCashFlowRange(range)}
+                  sx={{ fontSize: 13, cursor: "pointer", borderRadius: "8px", mx: 0.75 }}
+                >
+                  {range}
+                </MenuItem>
+              ))}
+            </Menu>
           </div>
 
           <div className="mt-6 h-[290px]">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={chartData} margin={{ top: 8, right: 6, bottom: 0, left: -22 }}>
+              <AreaChart data={selectedChartData} margin={{ top: 8, right: 6, bottom: 0, left: -22 }}>
                 <defs>
                   <linearGradient id="incomeFill" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#111827" stopOpacity={0.16} />
@@ -196,7 +259,12 @@ export default function DashboardPage() {
               <p className="text-sm font-semibold">Spending by category</p>
               <p className="mt-1 text-xs text-[#9ca3af]">September 2026</p>
             </div>
-            <button className="cursor-pointer text-xs font-semibold text-[#6b7280] hover:text-[#111827]">View all</button>
+            <Link
+              href="/categories"
+              className="cursor-pointer text-xs font-semibold text-[#6b7280] transition hover:text-[#111827]"
+            >
+              View all
+            </Link>
           </div>
 
           <div className="mt-7 space-y-5">
@@ -230,7 +298,14 @@ export default function DashboardPage() {
             <p className="text-sm font-semibold">Recent transactions</p>
             <p className="mt-1 text-xs text-[#9ca3af]">Your latest activity across all wallets</p>
           </div>
-          <Button size="small" sx={{ color: "#6b7280", cursor: "pointer" }}>View all</Button>
+          <Button
+            component={Link}
+            href="/transactions"
+            size="small"
+            sx={{ color: "#6b7280", cursor: "pointer", textTransform: "none" }}
+          >
+            View all
+          </Button>
         </div>
 
         <div className="mt-4 divide-y divide-black/[0.055]">
