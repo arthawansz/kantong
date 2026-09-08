@@ -11,7 +11,6 @@ import {
   ReceiptText,
   Settings,
   Tags,
-  UserRound,
   WalletCards,
   X,
 } from "lucide-react";
@@ -22,7 +21,6 @@ const navItems = [
   { label: "Transactions", href: "/transactions", icon: ReceiptText },
   { label: "Categories", href: "/categories", icon: Tags },
   { label: "Analytics", href: "/analytics", icon: BarChart3 },
-  { label: "Profile", href: "/profile", icon: UserRound },
 ];
 
 export default function AppSidebar({ collapsed, mobileOpen, onCloseMobile }) {
