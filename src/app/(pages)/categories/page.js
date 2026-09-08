@@ -12,6 +12,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Archive,
+  ArrowUpRight,
   BriefcaseBusiness,
   Car,
   CircleDollarSign,
@@ -23,7 +24,9 @@ import {
   Plus,
   ShoppingBag,
   Smartphone,
+  Sparkles,
   Trash2,
+  TrendingUp,
   Utensils,
   X,
 } from "lucide-react";
@@ -86,7 +89,10 @@ export default function CategoriesPage() {
   const topCategory = expenseCategories.reduce((top, category) => (!top || category.amount > top.amount ? category : top), null);
 
   const enrichedExpenses = useMemo(
-    () => expenseCategories.map((category) => ({ ...category, percent: totalSpending ? Math.round((category.amount / totalSpending) * 100) : 0 })),
+    () => expenseCategories.map((category) => ({
+      ...category,
+      percent: totalSpending ? Math.round((category.amount / totalSpending) * 100) : 0,
+    })),
     [categories, totalSpending]
   );
 
@@ -153,9 +159,9 @@ export default function CategoriesPage() {
       <section>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#9aa1ab]">Category management</p>
-            <h2 className="mt-2 text-2xl font-bold tracking-[-0.04em] text-[#111827] sm:text-[30px]">Know where your money goes.</h2>
-            <p className="mt-2 max-w-xl text-sm leading-6 text-[#7a828e]">Understand your spending mix and keep transaction categories organized around how you actually use money.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#9aa1ab]">Category intelligence</p>
+            <h2 className="mt-2 text-2xl font-bold tracking-[-0.04em] text-[#111827] sm:text-[30px]">See the shape of your spending.</h2>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-[#7a828e]">Turn everyday transactions into a cleaner picture of where your money is actually going.</p>
           </div>
           <Button
             variant="contained"
@@ -167,32 +173,109 @@ export default function CategoriesPage() {
           </Button>
         </div>
 
-        <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          <div className="rounded-2xl border border-black/[0.06] bg-white p-4"><p className="text-[11px] font-medium text-[#8a919d]">Total spending</p><p className="mt-2 text-xl font-bold tracking-[-0.03em] text-[#111827]">{money(totalSpending)}</p><p className="mt-1 text-[10px] text-[#9ca3af]">September 2026</p></div>
-          <div className="rounded-2xl border border-black/[0.06] bg-white p-4"><p className="text-[11px] font-medium text-[#8a919d]">Active categories</p><p className="mt-2 text-xl font-bold tracking-[-0.03em] text-[#111827]">{activeCategories.length}</p><p className="mt-1 text-[10px] text-[#9ca3af]">Expense and income</p></div>
-          <div className="rounded-2xl border border-black/[0.06] bg-white p-4"><p className="text-[11px] font-medium text-[#8a919d]">Top category</p><p className="mt-2 truncate text-xl font-bold tracking-[-0.03em] text-[#111827]">{topCategory?.name ?? "—"}</p><p className="mt-1 text-[10px] text-[#9ca3af]">{topCategory ? money(topCategory.amount) : "No spending yet"}</p></div>
+        <div className="relative mt-6 overflow-hidden rounded-[24px] bg-[#111827] p-6 text-white md:p-7">
+          <div className="pointer-events-none absolute -right-24 -top-28 h-72 w-72 rounded-full border border-white/[0.08]" />
+          <div className="pointer-events-none absolute right-10 top-8 h-40 w-40 rounded-full border border-white/[0.05]" />
+          <div className="pointer-events-none absolute bottom-0 left-1/3 h-px w-2/3 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+
+          <div className="relative grid gap-6 lg:grid-cols-[1.15fr_1fr] lg:items-end">
+            <div>
+              <div className="flex items-center gap-2 text-white/50">
+                <Sparkles size={14} />
+                <p className="text-xs font-semibold uppercase tracking-[0.14em]">September overview</p>
+              </div>
+              <p className="mt-5 text-sm text-white/55">Total spending</p>
+              <p className="mt-2 text-4xl font-bold tracking-[-0.055em] sm:text-[44px]">{money(totalSpending)}</p>
+              <p className="mt-3 max-w-md text-xs leading-5 text-white/45">Your expense mix across {expenseCategories.length} active spending categories.</p>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+              <div className="rounded-2xl border border-white/[0.08] bg-white/[0.045] p-4">
+                <p className="text-[11px] text-white/45">Top category</p>
+                <p className="mt-2 truncate text-sm font-semibold">{topCategory?.name ?? "—"}</p>
+                <p className="mt-1 text-[10px] text-white/35">{topCategory ? money(topCategory.amount) : "No spending yet"}</p>
+              </div>
+              <div className="rounded-2xl border border-white/[0.08] bg-white/[0.045] p-4">
+                <p className="text-[11px] text-white/45">Active categories</p>
+                <p className="mt-2 text-sm font-semibold">{activeCategories.length}</p>
+                <p className="mt-1 text-[10px] text-white/35">Expense + income</p>
+              </div>
+              <div className="rounded-2xl border border-white/[0.08] bg-white/[0.045] p-4">
+                <p className="text-[11px] text-white/45">Coverage</p>
+                <div className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-emerald-300"><TrendingUp size={14} /> Healthy</div>
+                <p className="mt-1 text-[10px] text-white/35">All spending mapped</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="mt-6 rounded-[20px] border border-black/[0.06] bg-white p-5 md:p-6">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div><p className="text-sm font-bold text-[#111827]">Spending breakdown</p><p className="mt-1 text-xs text-[#9ca3af]">Your active expense categories this month</p></div>
-          <p className="text-xs font-semibold text-[#7a828e]">{money(totalSpending)} total</p>
+      <section className="mt-6 grid gap-5 xl:grid-cols-[1.35fr_0.85fr]">
+        <div className="rounded-[22px] border border-black/[0.06] bg-white p-5 md:p-6">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-bold text-[#111827]">Spending breakdown</p>
+              <p className="mt-1 text-xs text-[#9ca3af]">Relative weight of every active expense category</p>
+            </div>
+            <p className="text-xs font-semibold text-[#7a828e]">{money(totalSpending)} total</p>
+          </div>
+
+          <div className="mt-6 space-y-2.5">
+            {enrichedExpenses.map((category) => {
+              const Icon = iconOptions[category.iconKey]?.icon ?? CircleDollarSign;
+              return (
+                <button
+                  key={category.id}
+                  type="button"
+                  onClick={() => setDetailCategory(category)}
+                  className="group block w-full cursor-pointer rounded-2xl border border-transparent p-3 text-left transition hover:border-black/[0.05] hover:bg-[#fafbfc]"
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex min-w-0 items-center gap-3">
+                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl" style={{ backgroundColor: `${category.color}14`, color: category.color }}><Icon size={17} /></div>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold text-[#111827]">{category.name}</p>
+                        <p className="mt-0.5 text-[10px] text-[#9ca3af]">{category.transactionCount} transactions</p>
+                      </div>
+                    </div>
+                    <div className="shrink-0 text-right">
+                      <p className="text-sm font-semibold text-[#111827]">{money(category.amount)}</p>
+                      <p className="mt-0.5 text-[10px] text-[#9ca3af]">{category.percent}%</p>
+                    </div>
+                  </div>
+                  <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[#f0f1f3]">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${category.percent}%` }}
+                      transition={{ duration: 0.45, ease: "easeOut" }}
+                      className="h-full rounded-full"
+                      style={{ backgroundColor: category.color }}
+                    />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="mt-6 space-y-5">
-          {enrichedExpenses.map((category) => {
-            const Icon = iconOptions[category.iconKey]?.icon ?? CircleDollarSign;
-            return (
-              <button key={category.id} type="button" onClick={() => setDetailCategory(category)} className="block w-full cursor-pointer text-left">
-                <div className="mb-2 flex items-center justify-between gap-4">
-                  <div className="flex min-w-0 items-center gap-3"><div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl" style={{ backgroundColor: `${category.color}14`, color: category.color }}><Icon size={16} /></div><div className="min-w-0"><p className="truncate text-sm font-semibold text-[#111827]">{category.name}</p><p className="mt-0.5 text-[10px] text-[#9ca3af]">{category.transactionCount} transactions</p></div></div>
-                  <div className="shrink-0 text-right"><p className="text-sm font-semibold text-[#111827]">{money(category.amount)}</p><p className="mt-0.5 text-[10px] text-[#9ca3af]">{category.percent}%</p></div>
-                </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-[#f0f1f3]"><div className="h-full rounded-full transition-all" style={{ width: `${category.percent}%`, backgroundColor: category.color }} /></div>
-              </button>
-            );
-          })}
+        <div className="rounded-[22px] border border-black/[0.06] bg-[#f8fafb] p-5 md:p-6">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm font-bold text-[#111827]">Spending signal</p>
+              <p className="mt-1 text-xs text-[#9ca3af]">Quick read on your category mix</p>
+            </div>
+            <div className="grid h-9 w-9 place-items-center rounded-xl bg-white text-[#111827] shadow-sm shadow-black/[0.04]"><ArrowUpRight size={16} /></div>
+          </div>
+          <div className="mt-6 rounded-2xl bg-white p-4 shadow-sm shadow-black/[0.03]">
+            <p className="text-[11px] font-medium text-[#9ca3af]">Largest share</p>
+            <p className="mt-2 text-xl font-bold tracking-[-0.04em] text-[#111827]">{topCategory?.name ?? "—"}</p>
+            <p className="mt-2 text-xs leading-5 text-[#7a828e]">{topCategory ? `${Math.round((topCategory.amount / totalSpending) * 100)}% of this month's tracked spending.` : "No expense data yet."}</p>
+          </div>
+          <div className="mt-3 rounded-2xl border border-black/[0.05] bg-white/70 p-4">
+            <p className="text-[11px] font-medium text-[#9ca3af]">Structure</p>
+            <p className="mt-2 text-sm font-semibold text-[#111827]">{expenseCategories.length} expense categories · {activeCategories.length - expenseCategories.length} income categories</p>
+            <p className="mt-2 text-xs leading-5 text-[#7a828e]">Keep the list focused enough that every transaction stays easy to classify.</p>
+          </div>
         </div>
       </section>
 
@@ -206,9 +289,21 @@ export default function CategoriesPage() {
           {categories.map((category, index) => {
             const Icon = iconOptions[category.iconKey]?.icon ?? CircleDollarSign;
             return (
-              <motion.div key={category.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.18, delay: index * 0.025 }} className={`relative rounded-[20px] border border-black/[0.06] bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/[0.04] ${category.archived ? "opacity-55" : ""}`}>
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex min-w-0 items-center gap-3"><div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl" style={{ backgroundColor: `${category.color}14`, color: category.color }}><Icon size={18} strokeWidth={1.9} /></div><div className="min-w-0"><p className="truncate text-sm font-bold text-[#111827]">{category.name}</p><p className="mt-1 text-[11px] text-[#9ca3af]">{category.type} · {category.archived ? "Archived" : "Active"}</p></div></div>
+              <motion.div
+                key={category.id}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2, delay: index * 0.035 }}
+                className={`group relative overflow-visible rounded-[20px] border border-black/[0.06] bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/[0.04] ${category.archived ? "opacity-55" : ""}`}
+              >
+                <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[20px]">
+                  <div className="absolute -right-10 -top-10 h-28 w-28 rounded-full opacity-70" style={{ backgroundColor: `${category.color}0d` }} />
+                </div>
+                <div className="relative flex items-start justify-between gap-4">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl" style={{ backgroundColor: `${category.color}14`, color: category.color }}><Icon size={18} strokeWidth={1.9} /></div>
+                    <div className="min-w-0"><p className="truncate text-sm font-bold text-[#111827]">{category.name}</p><p className="mt-1 text-[11px] text-[#9ca3af]">{category.type} · {category.archived ? "Archived" : "Active"}</p></div>
+                  </div>
                   <div className="relative">
                     <button type="button" onClick={() => setMenuCategory(menuCategory?.id === category.id ? null : category)} className="grid h-8 w-8 cursor-pointer place-items-center rounded-lg text-[#9ca3af] transition hover:bg-[#f5f6f7] hover:text-[#111827]" aria-label={`More options for ${category.name}`}><MoreHorizontal size={17} /></button>
                     <AnimatePresence>
@@ -224,10 +319,10 @@ export default function CategoriesPage() {
                   </div>
                 </div>
 
-                <button type="button" onClick={() => setDetailCategory(category)} className="mt-7 block w-full cursor-pointer text-left">
+                <button type="button" onClick={() => setDetailCategory(category)} className="relative mt-7 block w-full cursor-pointer text-left">
                   <p className="text-[11px] font-medium text-[#9ca3af]">{category.type === "Income" ? "Recorded income" : "Spent this month"}</p>
                   <p className="mt-1.5 text-xl font-bold tracking-[-0.04em] text-[#111827]">{money(category.amount)}</p>
-                  <div className="mt-5 flex items-center justify-between border-t border-black/[0.055] pt-4"><span className="text-[11px] text-[#8a919d]">{category.transactionCount} transactions</span><span className="text-[11px] font-semibold text-[#6b7280] transition hover:text-[#111827]">View details</span></div>
+                  <div className="mt-5 flex items-center justify-between border-t border-black/[0.055] pt-4"><span className="text-[11px] text-[#8a919d]">{category.transactionCount} transactions</span><span className="text-[11px] font-semibold text-[#6b7280] transition group-hover:text-[#111827]">View details</span></div>
                 </button>
               </motion.div>
             );
