@@ -26,6 +26,16 @@ const navItems = [
 export default function AppSidebar({ collapsed, mobileOpen, onCloseMobile }) {
   const pathname = usePathname();
 
+  const monthlySpending = 1930000;
+  const monthlyTarget = 3500000;
+  const monthlyProgress = Math.min((monthlySpending / monthlyTarget) * 100, 100);
+  const monthlyProgressColor =
+    monthlyProgress >= 66
+      ? "#dc2626"
+      : monthlyProgress >= 50
+        ? "#eab308"
+        : "#16a34a";
+
   const navLink = ({ label, href, icon: Icon }) => {
     const active = pathname === href;
 
@@ -111,7 +121,13 @@ export default function AppSidebar({ collapsed, mobileOpen, onCloseMobile }) {
           <p className="text-xs font-semibold text-[#111827]">Monthly target</p>
           <p className="mt-1 text-xs leading-5 text-[#8a919d]">Keep spending below Rp3.5M this month.</p>
           <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-[#e5e7eb]">
-            <div className="h-full w-[56%] rounded-full bg-[#111827]" />
+            <div
+              className="h-full rounded-full transition-[width,background-color] duration-300 ease-out"
+              style={{
+                width: `${monthlyProgress}%`,
+                backgroundColor: monthlyProgressColor,
+              }}
+            />
           </div>
           <div className="mt-2 flex justify-between text-[11px] text-[#9ca3af]">
             <span>Rp1.93M</span>
