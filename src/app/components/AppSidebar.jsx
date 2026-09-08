@@ -11,6 +11,7 @@ import {
   ReceiptText,
   Settings,
   Tags,
+  UserRound,
   WalletCards,
   X,
 } from "lucide-react";
@@ -21,6 +22,7 @@ const navItems = [
   { label: "Transactions", href: "/transactions", icon: ReceiptText },
   { label: "Categories", href: "/categories", icon: Tags },
   { label: "Analytics", href: "/analytics", icon: BarChart3 },
+  { label: "Profile", href: "/profile", icon: UserRound },
 ];
 
 export default function AppSidebar({ collapsed, mobileOpen, onCloseMobile }) {
@@ -44,7 +46,7 @@ export default function AppSidebar({ collapsed, mobileOpen, onCloseMobile }) {
         href={href}
         onClick={onCloseMobile}
         aria-label={collapsed ? label : undefined}
-        className={`group flex w-full items-center rounded-xl py-2.5 text-sm font-medium transition-all duration-200 ${
+        className={`group flex w-full cursor-pointer items-center rounded-xl py-2.5 text-sm font-medium transition-all duration-200 ${
           collapsed ? "lg:justify-center lg:px-2" : "gap-3 px-3"
         } ${
           active
@@ -86,7 +88,7 @@ export default function AppSidebar({ collapsed, mobileOpen, onCloseMobile }) {
           <Link
             href="/dashboard"
             onClick={onCloseMobile}
-            className={`flex min-w-0 items-center gap-2.5 ${collapsed ? "lg:justify-center" : ""}`}
+            className={`flex min-w-0 cursor-pointer items-center gap-2.5 ${collapsed ? "lg:justify-center" : ""}`}
           >
             <Image
               src={LogoLight}
@@ -107,7 +109,7 @@ export default function AppSidebar({ collapsed, mobileOpen, onCloseMobile }) {
             type="button"
             onClick={onCloseMobile}
             aria-label="Close sidebar"
-            className="grid h-8 w-8 place-items-center rounded-lg text-[#7a828e] transition hover:bg-[#f6f7f9] hover:text-[#111827] lg:hidden"
+            className="grid h-8 w-8 cursor-pointer place-items-center rounded-lg text-[#7a828e] transition hover:bg-[#f6f7f9] hover:text-[#111827] lg:hidden"
           >
             <X size={18} />
           </button>
@@ -142,7 +144,7 @@ export default function AppSidebar({ collapsed, mobileOpen, onCloseMobile }) {
                 href="/settings"
                 onClick={onCloseMobile}
                 aria-label="Settings"
-                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition lg:justify-center lg:px-2 ${
+                className={`flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition lg:justify-center lg:px-2 ${
                   pathname === "/settings"
                     ? "bg-[#f1f3f5] text-[#111827]"
                     : "text-[#737b88] hover:bg-[#f8f9fa] hover:text-[#111827]"
@@ -156,7 +158,7 @@ export default function AppSidebar({ collapsed, mobileOpen, onCloseMobile }) {
             <Link
               href="/settings"
               onClick={onCloseMobile}
-              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
+              className={`flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
                 pathname === "/settings"
                   ? "bg-[#f1f3f5] text-[#111827]"
                   : "text-[#737b88] hover:bg-[#f8f9fa] hover:text-[#111827]"
